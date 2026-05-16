@@ -3,23 +3,26 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GVA AI UGC FACTORY</title>
+<title>GVA AI UGC FACTORY — AI動画量産システム</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Jost:wght@200;300;400;500;600&family=Noto+Sans+JP:wght@200;300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Jost:wght@200;300;400;500;600;700&family=Noto+Sans+JP:wght@200;300;400;500;700&display=swap" rel="stylesheet">
 <style>
-*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; }
-
 :root {
   --black: #080808;
+  --off-black: #0D0D0D;
+  --card: #111111;
   --white: #F5F4F0;
-  --gray: #6B6B6B;
-  --light: #EFEFEB;
-  --border: rgba(0,0,0,0.1);
-  --border-w: rgba(255,255,255,0.12);
+  --gray: #6A6A6A;
+  --light: #F0EFEB;
+  --border: rgba(255,255,255,0.07);
+  --border-d: rgba(0,0,0,0.1);
+  --cyan: #00E0C8;
+  --cyan-dim: rgba(0,224,200,0.12);
 }
 
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
 body {
   background: var(--white);
   color: var(--black);
@@ -28,1034 +31,1181 @@ body {
   overflow-x: hidden;
 }
 
-/* ── NAV ── */
+/* ─── NAV ─── */
 nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  padding: 28px 56px;
+  position: fixed; top:0; left:0; right:0; z-index:100;
+  padding: 22px 56px;
   display: flex; justify-content: space-between; align-items: center;
-  mix-blend-mode: normal;
+  transition: background 0.4s ease, border-color 0.4s ease;
+  border-bottom: 1px solid transparent;
 }
-
-nav.light .nav-logo,
-nav.light .nav-links a { color: var(--white); }
-nav.light .nav-cta { border-color: rgba(255,255,255,0.4); color: var(--white); }
-nav.light .nav-cta:hover { background: var(--white); color: var(--black); }
-
-nav.dark .nav-logo,
-nav.dark .nav-links a { color: var(--black); }
-nav.dark .nav-cta { border-color: rgba(0,0,0,0.25); color: var(--black); }
-nav.dark .nav-cta:hover { background: var(--black); color: var(--white); }
-
+nav.scrolled {
+  background: rgba(8,8,8,0.96);
+  backdrop-filter: blur(20px);
+  border-bottom-color: var(--border);
+}
 .nav-logo {
   font-family: 'Jost', sans-serif;
-  font-size: 14px; font-weight: 500;
-  letter-spacing: 0.18em; text-transform: uppercase;
+  font-size: 13px; font-weight: 600;
+  letter-spacing: 0.2em; text-transform: uppercase;
   color: var(--white);
-  transition: color 0.4s ease;
 }
-
-.nav-links {
-  display: flex; gap: 40px; list-style: none;
-}
+.nav-links { display:flex; gap:36px; list-style:none; }
 .nav-links a {
-  font-family: 'Jost', sans-serif;
   font-size: 12px; font-weight: 400;
-  letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--white); text-decoration: none;
-  transition: opacity 0.3s ease, color 0.4s ease;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: rgba(255,255,255,0.5); text-decoration: none;
+  transition: color 0.2s;
 }
-.nav-links a:hover { opacity: 0.6; }
-
+.nav-links a:hover { color: var(--white); }
 .nav-cta {
-  font-family: 'Jost', sans-serif;
-  font-size: 12px; font-weight: 500;
+  font-size: 12px; font-weight: 600;
   letter-spacing: 0.1em; text-transform: uppercase;
-  border: 1px solid rgba(255,255,255,0.4);
-  color: var(--white);
-  padding: 10px 28px;
+  color: var(--black);
+  background: var(--white);
+  padding: 10px 24px;
   text-decoration: none;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
 }
-.nav-cta:hover { background: var(--white); color: var(--black); }
+.nav-cta:hover { background: var(--cyan); }
 
-/* ── HERO ── */
+/* ─── HERO ─── */
 .hero {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: grid; grid-template-columns: 1fr 1fr;
   min-height: 100vh;
   background: var(--black);
-  position: relative;
-  overflow: hidden;
 }
 
 .hero-left {
-  background: #080808;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 120px 64px 80px;
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 140px 64px 80px;
   position: relative;
-  z-index: 1;
+  border-right: 1px solid var(--border);
 }
 
 .hero-eyebrow {
-  font-family: 'Jost', sans-serif;
-  font-size: 10px; font-weight: 400;
-  letter-spacing: 0.25em; text-transform: uppercase;
-  color: rgba(255,255,255,0.45);
+  font-size: 10px; font-weight: 600;
+  letter-spacing: 0.24em; text-transform: uppercase;
+  color: var(--cyan);
+  display: flex; align-items: center; gap: 14px;
   margin-bottom: 32px;
 }
+.hero-eyebrow::before {
+  content: ''; width: 28px; height: 1px; background: var(--cyan);
+}
 
-h1 {
+.hero-left h1 {
   font-family: 'DM Serif Display', serif;
-  font-size: clamp(52px, 5.5vw, 92px);
-  line-height: 1.0;
-  color: #ffffff;
+  font-size: clamp(52px, 5.5vw, 84px);
+  color: var(--white);
+  line-height: 1.02;
   font-weight: 400;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
   margin-bottom: 32px;
 }
-
-h1 em {
+.hero-left h1 em {
   font-style: italic;
-  opacity: 0.75;
+  color: var(--cyan);
 }
 
 .hero-sub {
   font-family: 'Noto Sans JP', sans-serif;
-  font-size: 13px; font-weight: 200;
-  color: rgba(255,255,255,0.45);
-  line-height: 1.9;
+  font-size: 14px; font-weight: 200;
+  color: rgba(245,244,240,0.45);
+  line-height: 1.9; max-width: 420px;
   margin-bottom: 44px;
-  max-width: 360px;
+  padding-left: 20px;
+  border-left: 2px solid rgba(0,224,200,0.3);
 }
 
-.hero-cta {
-  display: inline-block;
-  font-family: 'Jost', sans-serif;
-  font-size: 12px; font-weight: 500;
+.hero-btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: var(--white);
+  color: var(--black);
+  font-size: 13px; font-weight: 600;
   letter-spacing: 0.1em; text-transform: uppercase;
-  color: #080808;
-  background: #ffffff;
-  padding: 16px 40px;
-  text-decoration: none;
-  transition: all 0.3s ease;
-  align-self: flex-start;
-  margin-bottom: 72px;
+  padding: 16px 36px;
+  text-decoration: none; width: fit-content;
+  transition: all 0.25s ease;
 }
-.hero-cta:hover { background: rgba(255,255,255,0.85); }
+.hero-btn:hover { background: var(--cyan); transform: translateY(-2px); }
 
 .hero-stats {
-  display: flex;
-  gap: 40px;
-  border-top: 1px solid rgba(255,255,255,0.1);
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  margin-top: 56px;
   padding-top: 40px;
+  border-top: 1px solid var(--border);
 }
-
-.hero-stat-item {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.hero-stat-num {
+.hero-stat { padding: 0 24px 0 0; }
+.hero-stat:first-child { padding-left: 0; }
+.hero-stat-n {
   font-family: 'DM Serif Display', serif;
-  font-size: 22px; font-weight: 400;
-  color: #ffffff;
-  line-height: 1;
+  font-size: 36px; color: var(--white);
+  line-height: 1; display: block;
 }
-
-.hero-stat-label {
-  font-family: 'Jost', sans-serif;
-  font-size: 9px; font-weight: 400;
-  letter-spacing: 0.14em; text-transform: uppercase;
-  color: rgba(255,255,255,0.35);
+.hero-stat-l {
+  font-size: 10px; color: rgba(245,244,240,0.3);
+  letter-spacing: 0.12em; text-transform: uppercase;
+  display: block; margin-top: 6px;
 }
 
 .hero-right {
-  background: #080808;
-  position: relative;
-  overflow: hidden;
+  position: relative; overflow: hidden;
 }
-
 .hero-right img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.hero-right-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to right, #080808 0%, rgba(8,8,8,0.15) 40%, transparent 100%);
-  pointer-events: none;
-}
-
-/* ── STATEMENT ── */
-.statement {
-  background: var(--black);
-  padding: 140px 56px;
-  position: relative;
-  overflow: hidden;
-}
-
-.statement-text {
-  font-family: 'DM Serif Display', serif;
-  font-size: clamp(32px, 4.5vw, 64px);
-  color: var(--white);
-  line-height: 1.25;
-  max-width: 900px;
-  font-weight: 400;
-}
-
-.statement-text em {
-  font-style: italic;
-  color: rgba(255,255,255,0.45);
-}
-
-.statement-sub {
-  font-family: 'Noto Sans JP', sans-serif;
-  font-size: 14px; font-weight: 200;
-  color: rgba(255,255,255,0.4);
-  line-height: 1.9;
-  max-width: 480px;
-  margin-top: 48px;
-  padding-top: 48px;
-  border-top: 1px solid rgba(255,255,255,0.08);
-}
-
-.statement-num {
-  position: absolute; right: 56px; top: 50%;
-  transform: translateY(-50%);
-  font-family: 'DM Serif Display', serif;
-  font-size: 200px; color: rgba(255,255,255,0.03);
-  line-height: 1; pointer-events: none;
-  font-style: italic;
-}
-
-/* ── STATS ── */
-.stats-bar {
-  background: var(--light);
-  padding: 72px 56px;
-  border-bottom: 1px solid var(--border);
-}
-
-.stats-inner {
-  display: grid; grid-template-columns: repeat(4, 1fr);
-  gap: 0;
-}
-
-.stat-col {
-  padding: 0 48px 0 0;
-  border-right: 1px solid var(--border);
-  margin-right: 48px;
-}
-.stat-col:last-child { border-right: none; margin-right: 0; }
-
-.stat-number {
-  font-family: 'DM Serif Display', serif;
-  font-size: 56px; font-weight: 400;
-  color: var(--black); line-height: 1;
-  margin-bottom: 10px;
-}
-
-.stat-label {
-  font-family: 'Jost', sans-serif;
-  font-size: 11px; font-weight: 400;
-  letter-spacing: 0.12em; text-transform: uppercase;
-  color: var(--gray);
-}
-
-/* ── FULL IMAGE ── */
-.full-image {
-  height: 70vh; min-height: 480px;
-  position: relative; overflow: hidden;
-}
-
-.full-image img {
-  width: 100%; height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.full-image-caption {
-  position: absolute; bottom: 40px; right: 56px;
-  font-family: 'Jost', sans-serif;
-  font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
-  color: rgba(255,255,255,0.5);
-}
-
-/* ── SPLIT SECTION ── */
-.split {
-  display: grid; grid-template-columns: 1fr 1fr;
-}
-
-.split.reverse { direction: rtl; }
-.split.reverse > * { direction: ltr; }
-
-.split-img {
-  position: relative; overflow: hidden;
-  min-height: 600px;
-}
-.split-img img {
   width: 100%; height: 100%;
   object-fit: cover; display: block;
 }
-
-.split-content {
-  background: var(--white);
-  padding: 80px 72px;
-  display: flex; flex-direction: column; justify-content: center;
+.hero-right-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(90deg, var(--black) 0%, transparent 30%);
 }
 
-.split-content.dark {
-  background: var(--black);
+/* ─── SECTION BASE ─── */
+.sec {
+  padding: 120px 56px;
 }
+.sec-inner { max-width: 1100px; margin: 0 auto; }
 
-.section-label {
-  font-family: 'Jost', sans-serif;
-  font-size: 10px; font-weight: 500;
-  letter-spacing: 0.22em; text-transform: uppercase;
+.sec-label {
+  font-size: 10px; font-weight: 600;
+  letter-spacing: 0.24em; text-transform: uppercase;
   color: var(--gray);
-  margin-bottom: 24px;
-  display: flex; align-items: center; gap: 16px;
+  display: flex; align-items: center; gap: 14px;
+  margin-bottom: 20px;
 }
-.section-label::before { content: '—'; }
-.split-content.dark .section-label { color: rgba(255,255,255,0.35); }
+.sec-label::before { content:'—'; }
 
 h2 {
   font-family: 'DM Serif Display', serif;
-  font-size: clamp(32px, 3.5vw, 52px);
-  font-weight: 400;
-  line-height: 1.15;
-  margin-bottom: 28px;
+  font-size: clamp(32px, 4vw, 56px);
+  font-weight: 400; line-height: 1.1;
   letter-spacing: -0.01em;
-}
-.split-content.dark h2 { color: var(--white); }
-
-.split-content p {
-  font-family: 'Noto Sans JP', sans-serif;
-  font-size: 14px; font-weight: 200;
-  color: rgba(0,0,0,0.55);
-  line-height: 1.95;
   margin-bottom: 16px;
-  max-width: 440px;
 }
-.split-content.dark p { color: rgba(255,255,255,0.45); }
 
-.spec-rows { margin: 32px 0; }
-.spec-row {
-  display: flex; justify-content: space-between;
-  padding: 14px 0;
-  border-bottom: 1px solid var(--border);
-  font-family: 'Jost', sans-serif;
-  font-size: 13px;
-}
-.split-content.dark .spec-row { border-bottom-color: rgba(255,255,255,0.07); }
-.spec-row-key {
-  font-weight: 400; letter-spacing: 0.04em;
+.sec-lead {
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 15px; font-weight: 200;
   color: var(--gray);
-  font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em;
-}
-.split-content.dark .spec-row-key { color: rgba(255,255,255,0.3); }
-.spec-row-val { color: var(--black); font-weight: 300; }
-.split-content.dark .spec-row-val { color: var(--white); }
-
-.price-tag {
-  margin-top: 40px; padding-top: 32px;
-  border-top: 1px solid var(--border);
-}
-.split-content.dark .price-tag { border-top-color: rgba(255,255,255,0.07); }
-.price-from {
-  font-family: 'Jost', sans-serif;
-  font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase;
-  color: var(--gray); margin-bottom: 6px;
-}
-.split-content.dark .price-from { color: rgba(255,255,255,0.3); }
-.price-amount {
-  font-family: 'DM Serif Display', serif;
-  font-size: 40px; font-weight: 400;
-  color: var(--black);
-}
-.split-content.dark .price-amount { color: var(--white); }
-
-/* ── COMPARE ── */
-.compare-sec {
-  background: var(--light);
-  padding: 120px 56px;
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
+  line-height: 1.85; max-width: 580px;
+  margin-bottom: 64px;
 }
 
-.compare-sec-head {
-  display: flex; justify-content: space-between; align-items: flex-end;
-  margin-bottom: 72px;
-}
+/* ─── WHAT IS ─── */
+.what-sec { background: var(--black); border-bottom: 1px solid var(--border); }
+.what-sec h2, .what-sec .sec-label { color: var(--white); }
+.what-sec .sec-label { color: rgba(245,244,240,0.3); }
+.what-sec .sec-lead { color: rgba(245,244,240,0.4); }
 
-.compare-table { width: 100%; border-collapse: collapse; }
-.compare-table th {
-  font-family: 'Jost', sans-serif;
-  font-size: 10px; font-weight: 500;
-  letter-spacing: 0.18em; text-transform: uppercase;
-  color: var(--gray);
-  padding: 16px 0; border-bottom: 1px solid var(--border);
-  text-align: left;
-}
-.compare-table th.hl { color: var(--black); }
-.compare-table td {
-  padding: 18px 0;
-  border-bottom: 1px solid var(--border);
-  font-family: 'Jost', sans-serif;
-  font-size: 14px; font-weight: 300;
-  color: var(--gray);
-  vertical-align: middle;
-}
-.compare-table td:first-child {
-  color: var(--black); font-weight: 400;
-  font-size: 12px; letter-spacing: 0.06em;
-  width: 140px;
-}
-.compare-table td.hl {
-  color: var(--black); font-weight: 400;
-}
-
-/* ── PROCESS ── */
-.process-sec {
-  background: var(--white);
-  padding: 120px 56px;
-  border-bottom: 1px solid var(--border);
-}
-
-.process-grid {
+.explainer {
   display: grid; grid-template-columns: 1fr 1fr;
   gap: 1px; background: var(--border);
   border: 1px solid var(--border);
-  margin-top: 72px;
+  margin-bottom: 56px;
+}
+.explainer-cell {
+  background: var(--off-black);
+  padding: 48px 40px;
+}
+.explainer-cell.highlight { background: rgba(0,224,200,0.04); }
+.explainer-badge {
+  font-size: 10px; font-weight: 600;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  padding: 4px 12px;
+  display: inline-block; margin-bottom: 20px;
+}
+.explainer-badge.old { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.3); }
+.explainer-badge.new { background: var(--cyan-dim); color: var(--cyan); }
+
+.explainer-cell h3 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 26px; font-weight: 400;
+  color: var(--white); margin-bottom: 16px;
+}
+.explainer-cell p {
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 14px; font-weight: 200;
+  color: rgba(245,244,240,0.45);
+  line-height: 1.85;
 }
 
-.process-cell {
+.diff-grid {
+  display: grid; grid-template-columns: repeat(5, 1fr);
+  gap: 1px; background: var(--border);
+  border: 1px solid var(--border);
+}
+.diff-col {
+  background: var(--off-black);
+  padding: 0;
+}
+.diff-col.header { background: var(--black); }
+.diff-head {
+  padding: 16px 20px;
+  font-size: 10px; font-weight: 600;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: rgba(245,244,240,0.25);
+  border-bottom: 1px solid var(--border);
+}
+.diff-head.hl { color: var(--cyan); }
+.diff-row {
+  display: contents;
+}
+.diff-cell {
+  padding: 16px 20px;
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 13px; font-weight: 300;
+  color: rgba(245,244,240,0.4);
+  border-bottom: 1px solid var(--border);
+}
+.diff-cell.label {
+  font-size: 11px; font-weight: 400;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: rgba(245,244,240,0.2);
+}
+.diff-cell.hl { color: var(--cyan); font-weight: 400; }
+.diff-grid .diff-col:last-child .diff-cell:last-child { border-bottom: none; }
+
+/* ─── TRUST ─── */
+.trust-sec { background: var(--light); border-bottom: 1px solid var(--border-d); }
+
+.trust-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+.trust-card {
   background: var(--white);
   padding: 48px;
+  border: 1px solid var(--border-d);
   position: relative;
+  overflow: hidden;
 }
-.p-index {
+.trust-card::after {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--black), transparent);
+}
+.trust-num {
   font-family: 'DM Serif Display', serif;
-  font-size: 72px; font-weight: 400; font-style: italic;
-  color: rgba(0,0,0,0.06); line-height: 1;
-  position: absolute; top: 32px; right: 40px;
+  font-size: 80px; font-weight: 400;
+  color: rgba(0,0,0,0.04);
+  position: absolute; bottom: 20px; right: 30px;
+  line-height: 1; pointer-events: none;
+  font-style: italic;
 }
-.p-step {
-  font-family: 'Jost', sans-serif;
-  font-size: 10px; font-weight: 500;
-  letter-spacing: 0.18em; text-transform: uppercase;
-  color: var(--gray); margin-bottom: 16px;
+.trust-icon {
+  font-size: 32px; margin-bottom: 20px; display: block;
 }
-.p-title {
+.trust-card h3 {
   font-family: 'DM Serif Display', serif;
   font-size: 24px; font-weight: 400;
-  margin-bottom: 14px; line-height: 1.2;
+  margin-bottom: 14px;
 }
-.p-desc {
+.trust-card p {
   font-family: 'Noto Sans JP', sans-serif;
-  font-size: 13px; font-weight: 200;
-  color: rgba(0,0,0,0.5); line-height: 1.85;
+  font-size: 14px; font-weight: 200;
+  color: rgba(0,0,0,0.55); line-height: 1.85;
+}
+.trust-card .proof {
+  margin-top: 20px; padding-top: 20px;
+  border-top: 1px solid var(--border-d);
+  font-size: 12px; font-weight: 500;
+  color: var(--black); letter-spacing: 0.04em;
 }
 
-/* ── PRICING ── */
-.pricing-sec {
-  background: var(--black);
-  padding: 120px 56px;
+/* ─── SERVICES ─── */
+.services-sec { background: var(--black); border-bottom: 1px solid var(--border); }
+.services-sec h2, .services-sec .sec-label { color: var(--white); }
+.services-sec .sec-label { color: rgba(245,244,240,0.3); }
+.services-sec .sec-lead { color: rgba(245,244,240,0.4); }
+
+.svc-tabs {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 24px;
 }
-
-.pricing-sec h2 { color: var(--white); }
-.pricing-sec .section-label { color: rgba(255,255,255,0.3); }
-.pricing-sec .section-label::before { color: rgba(255,255,255,0.3); }
-
-.plans-grid {
-  display: grid; grid-template-columns: repeat(3, 1fr);
-  gap: 1px; background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.06);
-  margin-top: 72px;
+.svc-tab {
+  border: 1px solid var(--border);
+  overflow: hidden;
+  transition: border-color 0.3s ease;
 }
+.svc-tab:hover { border-color: rgba(0,224,200,0.3); }
 
-.plan-card {
-  background: var(--black);
-  padding: 48px 40px;
-  position: relative;
-  transition: background 0.3s ease;
+.svc-tab-head {
+  padding: 32px 40px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: flex-start; gap: 20px;
+  background: rgba(255,255,255,0.02);
 }
-.plan-card:hover { background: #111; }
-
-.plan-card.featured {
-  background: var(--white);
+.svc-num {
+  font-family: 'DM Serif Display', serif;
+  font-size: 52px; color: rgba(0,224,200,0.15);
+  font-style: italic; line-height: 1; flex-shrink: 0;
 }
-.plan-card.featured:hover { background: #f0efeb; }
-
-.plan-type {
-  font-family: 'Jost', sans-serif;
-  font-size: 10px; font-weight: 500;
+.svc-title-group {}
+.svc-tag {
+  font-size: 9px; font-weight: 600;
   letter-spacing: 0.2em; text-transform: uppercase;
-  color: rgba(255,255,255,0.3);
+  color: var(--cyan); margin-bottom: 8px;
+  display: block;
+}
+.svc-tab h3 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 26px; font-weight: 400;
+  color: var(--white); line-height: 1.15;
+}
+
+.svc-tab-body { padding: 36px 40px; }
+.svc-desc {
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 14px; font-weight: 200;
+  color: rgba(245,244,240,0.5); line-height: 1.85;
   margin-bottom: 32px;
 }
-.plan-card.featured .plan-type { color: var(--gray); }
 
-.plan-price {
+.feature-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 1px; background: var(--border);
+  border: 1px solid var(--border);
+  margin-bottom: 32px;
+}
+.feature-cell {
+  background: #0A0A0A;
+  padding: 20px;
+}
+.feature-key {
+  font-size: 9px; font-weight: 600;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--cyan); margin-bottom: 6px;
+}
+.feature-val {
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 13px; font-weight: 300;
+  color: rgba(245,244,240,0.65); line-height: 1.5;
+}
+
+.price-row {
+  display: flex; gap: 0;
+  border: 1px solid var(--border);
+}
+.price-item {
+  flex: 1; padding: 18px 20px;
+  border-right: 1px solid var(--border);
+}
+.price-item:last-child { border-right: none; }
+.price-k {
+  font-size: 9px; font-weight: 600;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: rgba(245,244,240,0.2); margin-bottom: 6px;
+}
+.price-v {
   font-family: 'DM Serif Display', serif;
-  font-size: 44px; font-weight: 400;
-  color: var(--white); line-height: 1;
+  font-size: 22px; color: var(--white);
+}
+.price-n { font-size: 11px; color: rgba(245,244,240,0.3); margin-top: 3px; }
+
+/* ─── FLOW ─── */
+.flow-sec { background: var(--white); border-bottom: 1px solid var(--border-d); }
+
+.flow-visual {
+  display: grid; grid-template-columns: repeat(5, 1fr);
+  gap: 0; margin-top: 0;
+  border: 1px solid var(--border-d);
+}
+.flow-step {
+  padding: 40px 28px;
+  border-right: 1px solid var(--border-d);
+  position: relative;
+}
+.flow-step:last-child { border-right: none; }
+.flow-step::after {
+  content: '›';
+  position: absolute; right: -12px; top: 50%;
+  transform: translateY(-50%);
+  font-size: 20px; color: var(--gray);
+  z-index: 1; background: var(--white);
+  padding: 0 4px;
+}
+.flow-step:last-child::after { display: none; }
+
+.flow-n {
+  font-family: 'DM Serif Display', serif;
+  font-size: 52px; font-style: italic;
+  color: rgba(0,0,0,0.06); line-height: 1;
+  margin-bottom: 16px;
+}
+.flow-title {
+  font-size: 14px; font-weight: 600;
   margin-bottom: 8px;
 }
-.plan-card.featured .plan-price { color: var(--black); }
-
-.plan-price .plan-unit {
-  font-family: 'Jost', sans-serif;
-  font-size: 14px; font-weight: 300;
-  color: rgba(255,255,255,0.4);
-}
-.plan-card.featured .plan-price .plan-unit { color: var(--gray); }
-
-.plan-desc {
+.flow-desc {
   font-family: 'Noto Sans JP', sans-serif;
   font-size: 12px; font-weight: 200;
-  color: rgba(255,255,255,0.3);
-  line-height: 1.7;
-  margin-bottom: 32px;
-  padding-bottom: 32px;
-  border-bottom: 1px solid rgba(255,255,255,0.06);
+  color: var(--gray); line-height: 1.6;
 }
-.plan-card.featured .plan-desc {
-  color: var(--gray);
-  border-bottom-color: var(--border);
+.flow-note {
+  display: inline-block; margin-top: 12px;
+  font-size: 10px; font-weight: 500;
+  color: rgba(0,0,0,0.4);
+  background: var(--light);
+  padding: 3px 10px;
+  letter-spacing: 0.04em;
 }
 
-.plan-list { list-style: none; margin-bottom: 40px; }
+/* ─── COMPARE ─── */
+.compare-sec { background: var(--light); border-bottom: 1px solid var(--border-d); }
+
+.compare-table {
+  width: 100%; border-collapse: collapse;
+  border: 1px solid var(--border-d);
+}
+.compare-table th {
+  padding: 18px 24px;
+  font-size: 11px; font-weight: 600;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  border-bottom: 2px solid var(--border-d);
+  text-align: left; background: var(--white);
+}
+.compare-table th.hl { background: var(--black); color: var(--white); }
+.compare-table td {
+  padding: 18px 24px;
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 14px; font-weight: 300;
+  border-bottom: 1px solid var(--border-d);
+  color: var(--gray);
+}
+.compare-table td:first-child {
+  font-weight: 500; font-size: 12px;
+  letter-spacing: 0.06em; color: var(--black);
+  background: rgba(255,255,255,0.6);
+  width: 120px;
+}
+.compare-table td.hl {
+  background: rgba(0,0,0,0.02);
+  color: var(--black); font-weight: 400;
+}
+.compare-table tr:last-child td { border-bottom: none; }
+
+/* ─── PRICING ─── */
+.pricing-sec { background: var(--black); border-bottom: 1px solid var(--border); }
+.pricing-sec h2, .pricing-sec .sec-label { color: var(--white); }
+.pricing-sec .sec-label { color: rgba(245,244,240,0.3); }
+.pricing-sec .sec-lead { color: rgba(245,244,240,0.4); }
+
+.plans { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; background: var(--border); border: 1px solid var(--border); }
+.plan {
+  background: var(--black); padding: 48px 36px;
+  transition: background 0.3s;
+}
+.plan:hover { background: #111; }
+.plan.rec {
+  background: rgba(0,224,200,0.05);
+  border: 1px solid rgba(0,224,200,0.2);
+  margin: -1px; position: relative; z-index: 1;
+}
+.plan.rec::before {
+  content: 'RECOMMENDED';
+  display: block;
+  font-size: 9px; font-weight: 600;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--black); background: var(--cyan);
+  text-align: center; padding: 8px;
+  margin: -48px -36px 36px;
+}
+.plan-type {
+  font-size: 10px; font-weight: 600;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: rgba(245,244,240,0.25); margin-bottom: 16px;
+}
+.plan-price {
+  font-family: 'DM Serif Display', serif;
+  font-size: 48px; color: var(--white);
+  line-height: 1; margin-bottom: 6px;
+}
+.plan-price .unit {
+  font-family: 'Jost', sans-serif;
+  font-size: 15px; font-weight: 300;
+  color: rgba(245,244,240,0.3);
+}
+.plan-catch {
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 12px; font-weight: 200;
+  color: rgba(245,244,240,0.35);
+  margin-bottom: 28px; padding-bottom: 28px;
+  border-bottom: 1px solid var(--border);
+  line-height: 1.65;
+}
+.plan-list { list-style: none; margin-bottom: 36px; }
 .plan-list li {
   font-family: 'Noto Sans JP', sans-serif;
   font-size: 13px; font-weight: 200;
-  color: rgba(255,255,255,0.45);
+  color: rgba(245,244,240,0.5);
   padding: 10px 0;
   border-bottom: 1px solid rgba(255,255,255,0.04);
   display: flex; align-items: flex-start; gap: 10px;
   line-height: 1.5;
 }
-.plan-card.featured .plan-list li {
-  color: rgba(0,0,0,0.6);
-  border-bottom-color: rgba(0,0,0,0.06);
-}
-.plan-list li::before { content: '—'; opacity: 0.4; flex-shrink: 0; }
-
-.plan-action {
+.plan-list li::before { content:'—'; color: var(--cyan); flex-shrink:0; }
+.plan-btn {
   display: block; text-align: center;
-  font-family: 'Jost', sans-serif;
-  font-size: 12px; font-weight: 500;
+  font-size: 12px; font-weight: 600;
   letter-spacing: 0.12em; text-transform: uppercase;
   text-decoration: none;
   padding: 14px;
-  border: 1px solid rgba(255,255,255,0.15);
-  color: rgba(255,255,255,0.5);
-  transition: all 0.3s ease;
+  border: 1px solid var(--border);
+  color: rgba(245,244,240,0.4);
+  transition: all 0.25s ease;
 }
-.plan-action:hover {
-  border-color: var(--white); color: var(--white);
-}
-.plan-card.featured .plan-action {
-  background: var(--black); color: var(--white);
-  border-color: var(--black);
-}
-.plan-card.featured .plan-action:hover { background: #222; }
+.plan-btn:hover { border-color: var(--white); color: var(--white); }
+.plan-btn.solid { background: var(--cyan); color: var(--black); border-color: var(--cyan); }
+.plan-btn.solid:hover { background: var(--white); }
 
-/* ── CTA ── */
-.cta-sec {
-  height: 80vh; min-height: 560px;
-  position: relative; overflow: hidden;
-  display: flex; align-items: center; justify-content: center;
+/* ─── FAQ ─── */
+.faq-sec { background: var(--white); border-bottom: 1px solid var(--border-d); }
+.faq-item {
+  border-bottom: 1px solid var(--border-d);
+  padding: 28px 0;
 }
-
-.cta-bg {
-  position: absolute; inset: 0;
-  background: url('./abstract.jpg') center center / cover no-repeat;
+.faq-q {
+  font-size: 15px; font-weight: 500;
+  display: flex; align-items: flex-start; gap: 16px;
+  line-height: 1.5; margin-bottom: 12px;
+  cursor: pointer;
 }
-.cta-overlay {
-  position: absolute; inset: 0;
-  background: rgba(0,0,0,0.72);
-}
-
-.cta-content {
-  position: relative; z-index: 1;
-  text-align: center; max-width: 800px; padding: 0 40px;
-}
-
-.cta-label {
-  font-family: 'Jost', sans-serif;
-  font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase;
-  color: rgba(255,255,255,0.4);
-  margin-bottom: 28px;
-}
-
-.cta-content h2 {
+.faq-q::before {
+  content: 'Q';
   font-family: 'DM Serif Display', serif;
-  font-size: clamp(40px, 6vw, 80px);
-  color: var(--white); font-weight: 400;
-  line-height: 1.1; margin-bottom: 24px;
+  font-size: 15px; font-style: italic;
+  color: var(--white); background: var(--black);
+  width: 28px; height: 28px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; margin-top: 1px;
 }
-
-.cta-content p {
+.faq-a {
   font-family: 'Noto Sans JP', sans-serif;
   font-size: 14px; font-weight: 200;
-  color: rgba(255,255,255,0.45);
-  line-height: 1.9; margin-bottom: 48px;
+  color: var(--gray); line-height: 1.85;
+  padding-left: 44px;
 }
 
-.cta-form {
-  display: flex; flex-direction: column; gap: 1px;
-  background: rgba(255,255,255,0.08);
-  border: 1px solid rgba(255,255,255,0.08);
-  max-width: 480px; margin: 0 auto;
-  text-align: left;
+/* ─── CTA ─── */
+.cta-sec {
+  background: var(--black);
+  padding: 160px 56px;
+  position: relative; overflow: hidden;
+}
+.cta-grid {
+  position: absolute; inset: 0;
+  background-image: linear-gradient(var(--border) 1px, transparent 1px),
+                    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 0%, transparent 100%);
+}
+.cta-glow {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+  width: 600px; height: 400px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,224,200,0.06), transparent 70%);
+  pointer-events: none;
+}
+.cta-inner {
+  position: relative; z-index: 1;
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 80px; max-width: 1100px; margin: 0 auto;
+  align-items: start;
+}
+.cta-left {}
+.cta-left .sec-label { color: rgba(245,244,240,0.3); }
+.cta-left h2 {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(36px, 4.5vw, 64px);
+  color: var(--white); line-height: 1.1; margin-bottom: 20px;
+}
+.cta-left h2 em { font-style: italic; color: var(--cyan); }
+.cta-left p {
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 14px; font-weight: 200;
+  color: rgba(245,244,240,0.4); line-height: 1.9;
+}
+.cta-points {
+  list-style: none; margin-top: 32px;
+}
+.cta-points li {
+  display: flex; align-items: center; gap: 12px;
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 13px; font-weight: 300;
+  color: rgba(245,244,240,0.55);
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+.cta-points li::before {
+  content: '✓'; color: var(--cyan);
+  font-weight: 600; flex-shrink: 0;
 }
 
-.cta-form input,
-.cta-form textarea {
-  background: rgba(0,0,0,0.4);
-  border: none;
-  padding: 18px 24px;
-  color: var(--white);
-  font-family: 'Jost', sans-serif;
-  font-size: 14px; font-weight: 300;
-  outline: none;
+.contact-box {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+  padding: 48px;
+}
+.contact-box::before {
+  content: 'CONTACT FORM';
+  display: block;
+  font-size: 9px; font-weight: 600;
+  letter-spacing: 0.24em; text-transform: uppercase;
+  color: var(--cyan); margin-bottom: 32px;
+}
+.form-group { margin-bottom: 16px; }
+.form-label {
+  font-size: 9px; font-weight: 600;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: rgba(245,244,240,0.3); display: block; margin-bottom: 8px;
+}
+.form-input {
   width: 100%;
-  transition: background 0.2s ease;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  padding: 12px 16px;
+  color: var(--white);
+  font-family: 'Jost', sans-serif; font-size: 14px; font-weight: 300;
+  outline: none; transition: border-color 0.2s ease;
 }
-.cta-form input::placeholder,
-.cta-form textarea::placeholder {
-  color: rgba(255,255,255,0.2);
-  font-size: 13px;
+.form-input:focus { border-color: var(--cyan); }
+.form-input::placeholder { color: rgba(245,244,240,0.15); }
+textarea.form-input { min-height: 90px; resize: none; }
+.form-submit {
+  width: 100%; background: var(--white); color: var(--black);
+  border: none; padding: 16px;
+  font-family: 'Jost', sans-serif; font-size: 13px; font-weight: 600;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  cursor: pointer; transition: background 0.2s ease; margin-top: 4px;
 }
-.cta-form input:focus,
-.cta-form textarea:focus {
-  background: rgba(255,255,255,0.05);
-}
-.cta-form textarea { min-height: 90px; resize: none; }
-
-.cta-form button {
-  background: var(--white);
-  color: var(--black);
-  border: none;
-  padding: 18px 24px;
-  font-family: 'Jost', sans-serif;
-  font-size: 12px; font-weight: 500;
-  letter-spacing: 0.15em; text-transform: uppercase;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-.cta-form button:hover { background: #ddd; }
-
-.cta-note {
-  margin-top: 20px;
-  font-family: 'Jost', sans-serif;
-  font-size: 11px; letter-spacing: 0.08em;
-  color: rgba(255,255,255,0.2);
+.form-submit:hover { background: var(--cyan); }
+.form-note {
+  margin-top: 16px;
+  font-size: 10px; color: rgba(245,244,240,0.2);
+  letter-spacing: 0.06em; text-align: center;
 }
 
-/* ── FOOTER ── */
+/* ─── FOOTER ─── */
 footer {
   background: var(--black);
-  padding: 48px 56px;
+  border-top: 1px solid var(--border);
+  padding: 40px 56px;
   display: flex; justify-content: space-between; align-items: center;
-  border-top: 1px solid rgba(255,255,255,0.06);
 }
-.footer-logo {
-  font-family: 'Jost', sans-serif;
-  font-size: 13px; font-weight: 500;
-  letter-spacing: 0.18em; text-transform: uppercase;
-  color: rgba(255,255,255,0.5);
-}
-.footer-links { display: flex; gap: 32px; }
-.footer-links a {
-  font-family: 'Jost', sans-serif;
-  font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
-  color: rgba(255,255,255,0.25); text-decoration: none;
-  transition: color 0.2s ease;
-}
-.footer-links a:hover { color: rgba(255,255,255,0.6); }
-.footer-copy {
-  font-family: 'Jost', sans-serif;
-  font-size: 11px; color: rgba(255,255,255,0.2);
-  letter-spacing: 0.06em;
-}
+.footer-logo { font-size: 13px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(245,244,240,0.4); }
+.footer-links { display:flex; gap:28px; }
+.footer-links a { font-size: 11px; color: rgba(245,244,240,0.2); text-decoration: none; letter-spacing: 0.08em; text-transform: uppercase; transition: color 0.2s; }
+.footer-links a:hover { color: rgba(245,244,240,0.6); }
+.footer-copy { font-size: 11px; color: rgba(245,244,240,0.15); letter-spacing: 0.06em; }
 
-/* ── REVEAL ── */
-.reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.9s ease, transform 0.9s ease; }
-.reveal.on { opacity: 1; transform: translateY(0); }
-.reveal-slow { opacity: 0; transform: translateY(16px); transition: opacity 1.2s ease, transform 1.2s ease; }
-.reveal-slow.on { opacity: 1; transform: translateY(0); }
+/* ─── REVEAL ─── */
+.reveal { opacity:0; transform:translateY(24px); transition: opacity 0.8s ease, transform 0.8s ease; }
+.reveal.on { opacity:1; transform:translateY(0); }
 
-/* ── RESPONSIVE ── */
+/* ─── RESPONSIVE ─── */
 @media (max-width: 900px) {
-  nav { padding: 20px 24px; }
+  nav { padding: 18px 20px; }
   .nav-links { display: none; }
   .hero { grid-template-columns: 1fr; }
-  .hero-left { padding: 120px 24px 60px; }
-  .hero-right { min-height: 320px; }
-  .statement { padding: 80px 24px; }
-  .stats-inner { grid-template-columns: repeat(2, 1fr); gap: 32px; }
-  .stat-col { border-right: none; margin-right: 0; padding-right: 0; border-bottom: 1px solid var(--border); padding-bottom: 24px; }
-  .split { grid-template-columns: 1fr; }
-  .split-img { min-height: 320px; }
-  .split-content { padding: 56px 24px; }
-  .compare-sec { padding: 80px 24px; }
-  .compare-sec-head { flex-direction: column; gap: 24px; }
-  .process-sec { padding: 80px 24px; }
-  .process-grid { grid-template-columns: 1fr; }
-  .pricing-sec { padding: 80px 24px; }
-  .plans-grid { grid-template-columns: 1fr; }
-  .cta-sec { height: auto; min-height: 0; padding: 80px 0; }
-  footer { flex-direction: column; gap: 24px; text-align: center; padding: 32px 24px; }
+  .hero-right { height: 50vh; }
+  .hero-left { padding: 100px 24px 60px; }
+  .hero-stats { grid-template-columns: repeat(2,1fr); gap: 24px; }
+  .sec { padding: 80px 20px; }
+  .explainer, .svc-tabs, .trust-grid, .plans, .cta-inner { grid-template-columns: 1fr; }
+  .diff-grid { grid-template-columns: repeat(3,1fr); }
+  .flow-visual { grid-template-columns: 1fr 1fr; }
+  .flow-step::after { display: none; }
+  footer { flex-direction: column; gap: 20px; text-align: center; padding: 28px 20px; }
+  .contact-box { padding: 28px 20px; }
 }
 </style>
 </head>
 <body>
 
 <!-- NAV -->
-<nav class="light" id="mainNav">
+<nav id="nav">
   <div class="nav-logo">GVA AI UGC Factory</div>
   <ul class="nav-links">
     <li><a href="#services">Services</a></li>
-    <li><a href="#process">Process</a></li>
+    <li><a href="#flow">Flow</a></li>
     <li><a href="#pricing">Pricing</a></li>
   </ul>
-  <a href="#contact" class="nav-cta">Free Consult</a>
+  <a href="#contact" class="nav-cta">無料相談</a>
 </nav>
 
 <!-- HERO -->
 <section class="hero">
   <div class="hero-left">
     <div class="hero-eyebrow">GVA AI UGC FACTORY — 2026</div>
-    <h1>Content<br>Production.<br>Reimagined.</h1>
-    <p class="hero-sub">インフルエンサー事務所が、AI動画量産システムを手に入れた。</p>
-    <a href="#contact" class="hero-cta">無料相談を申し込む</a>
+    <h1>Content<br>Production.<br><em>Reimagined.</em></h1>
+    <p class="hero-sub">
+      インフルエンサー事務所が、AI動画量産システムを手に入れた。<br>
+      PR案件100件超の実績×AIで、従来の1/10のコストで本物のコンテンツを届ける。
+    </p>
+    <a href="#contact" class="hero-btn">無料相談を申し込む →</a>
     <div class="hero-stats">
-      <div class="hero-stat-item">
-        <span class="hero-stat-num">100+</span>
-        <span class="hero-stat-label">PR Cases</span>
+      <div class="hero-stat">
+        <span class="hero-stat-n">100<small style="font-size:20px">+</small></span>
+        <span class="hero-stat-l">PR Cases</span>
       </div>
-      <div class="hero-stat-item">
-        <span class="hero-stat-num">1/10</span>
-        <span class="hero-stat-label">Cost</span>
+      <div class="hero-stat">
+        <span class="hero-stat-n">1/10</span>
+        <span class="hero-stat-l">Cost</span>
       </div>
-      <div class="hero-stat-item">
-        <span class="hero-stat-num">48H</span>
-        <span class="hero-stat-label">Delivery</span>
+      <div class="hero-stat">
+        <span class="hero-stat-n">48H</span>
+        <span class="hero-stat-l">Delivery</span>
       </div>
-      <div class="hero-stat-item">
-        <span class="hero-stat-num">100+</span>
-        <span class="hero-stat-label">Variants</span>
+      <div class="hero-stat">
+        <span class="hero-stat-n">100<small style="font-size:20px">+</small></span>
+        <span class="hero-stat-l">Variants</span>
       </div>
     </div>
   </div>
   <div class="hero-right">
-    <img src="./phones.jpg" alt="AI UGC Content">
+    <img src="./phones.jpg" alt="AI UGC Content on Mobile">
     <div class="hero-right-overlay"></div>
   </div>
 </section>
 
-<!-- STATEMENT -->
-<section class="statement">
-  <div class="statement-num" aria-hidden="true">GVA</div>
-  <div class="reveal-slow">
-    <p class="statement-text">
-      AIツールは誰でも使える。<br>
-      <em>何が刺さるかを知っているのは、</em><br>
-      現場を持つ者だけだ。
-    </p>
-    <p class="statement-sub">
-      PR案件100件超、タレント9名を擁するGOOD VIBES AGENCYが、
-      AIによる動画量産システムを構築。従来の1/10のコストで、
-      インフルエンサーマーケティングの知見を乗せたコンテンツを届ける。
-    </p>
+<!-- WHAT IS AI UGC -->
+<section class="sec what-sec">
+  <div class="sec-inner">
+    <div class="sec-label reveal">What is AI UGC</div>
+    <h2 class="reveal" style="color:var(--white)">AIが作る「本物っぽい動画」<br>ではない。</h2>
+    <p class="sec-lead reveal">AI UGCとは、インフルエンサーが撮ったようなリアルな口コミ動画を、AI仮想アクターで高速・大量生成するシステム。撮影・キャスティング・修正コストをゼロにする。</p>
+
+    <div class="explainer reveal">
+      <div class="explainer-cell">
+        <span class="explainer-badge old">Traditional UGC</span>
+        <h3>従来の動画制作</h3>
+        <p>モデルをキャスティングして、スタジオで撮影して、編集して、修正して——1本作るだけで数日と数十万円がかかる。A/Bテストは現実的ではなく、量産は困難。</p>
+      </div>
+      <div class="explainer-cell highlight">
+        <span class="explainer-badge new">GVA AI UGC</span>
+        <h3>AIアクター動画</h3>
+        <p>AIが生成した仮想人物が自然に商品をPR。スクリプトさえ決まれば数時間で生成。修正は即日、100バリアントも技術的に可能。インフルエンサーマーケティングの知見を乗せることで「刺さる動画」になる。</p>
+      </div>
+    </div>
+
+    <div class="diff-grid reveal">
+      <div class="diff-col header">
+        <div class="diff-head">比較項目</div>
+        <div class="diff-cell label">制作期間</div>
+        <div class="diff-cell label">1本あたりの費用</div>
+        <div class="diff-cell label">修正対応</div>
+        <div class="diff-cell label">展開本数</div>
+        <div class="diff-cell label">A/Bテスト</div>
+      </div>
+      <div class="diff-col">
+        <div class="diff-head">タレント出演</div>
+        <div class="diff-cell">3〜5日</div>
+        <div class="diff-cell">30〜100万円</div>
+        <div class="diff-cell">再撮影が必要</div>
+        <div class="diff-cell">1〜2本が限界</div>
+        <div class="diff-cell">ほぼ不可</div>
+      </div>
+      <div class="diff-col">
+        <div class="diff-head">一般モデル撮影</div>
+        <div class="diff-cell">2〜4日</div>
+        <div class="diff-cell">15〜50万円</div>
+        <div class="diff-cell">追加コスト大</div>
+        <div class="diff-cell">3〜5本が限界</div>
+        <div class="diff-cell">困難</div>
+      </div>
+      <div class="diff-col">
+        <div class="diff-head" style="color: var(--cyan)">GVA AI UGC ✓</div>
+        <div class="diff-cell hl">数時間〜1日</div>
+        <div class="diff-cell hl">5〜15万円〜</div>
+        <div class="diff-cell hl">即日再生成</div>
+        <div class="diff-cell hl">100本以上</div>
+        <div class="diff-cell hl">複数訴求を並列</div>
+      </div>
+    </div>
   </div>
 </section>
 
-<!-- STATS -->
-<section class="stats-bar reveal">
-  <div class="stats-inner">
-    <div class="stat-col">
-      <div class="stat-number">100+</div>
-      <div class="stat-label">PR Cases</div>
-    </div>
-    <div class="stat-col">
-      <div class="stat-number">1/10</div>
-      <div class="stat-label">Cost vs Traditional</div>
-    </div>
-    <div class="stat-col">
-      <div class="stat-number">48H</div>
-      <div class="stat-label">Min. Delivery</div>
-    </div>
-    <div class="stat-col">
-      <div class="stat-number">100+</div>
-      <div class="stat-label">Variants Available</div>
+<!-- WHY GVA -->
+<section class="sec trust-sec">
+  <div class="sec-inner">
+    <div class="sec-label reveal">Why GVA</div>
+    <h2 class="reveal">同じAIを使っても、<br>結果が違う理由。</h2>
+    <p class="sec-lead reveal">AIツールは道具。何が刺さるかを知っているのは、インフルエンサーマーケティングの現場を持つGVAだけだ。</p>
+    <div class="trust-grid reveal">
+      <div class="trust-card">
+        <div class="trust-num">100</div>
+        <span class="trust-icon">🎯</span>
+        <h3>PR案件100件超の<br>現場知識</h3>
+        <p>コスメ・食品・アパレル・アプリ、あらゆるジャンルのPR案件を手がけてきた。「どんなフックが購買を動かすか」「何秒で離脱されるか」——この現場感覚がAIスクリプトの質を決定的に変える。</p>
+        <div class="proof">✓ スクリプト設計はGVAの人間が担当</div>
+      </div>
+      <div class="trust-card">
+        <div class="trust-num">9</div>
+        <span class="trust-icon">✨</span>
+        <h3>9名のタレントを<br>毎日ディレクション</h3>
+        <p>実際のインフルエンサーコンテンツの設計・ディレクションを日常業務として行っているGVAは、「本物っぽく見えるコンテンツの構造」を体感として知っている。AIアクターにそのリアリティを再現できる。</p>
+        <div class="proof">✓ タレントのノウハウをAIに転用</div>
+      </div>
+      <div class="trust-card">
+        <div class="trust-icon">🤖</span>
+        <h3>AIに頼るのではなく<br>AIを使いこなす</h3>
+        <p>「どんな商品に」「どんな見せ方で」「どんな言葉で届けるか」——この判断はPRの現場でしか培えない。GVAはAIと人間の知見を組み合わせることで、ツールだけでは出せない動画を作る。</p>
+        <div class="proof">✓ 戦略設計〜制作〜効果測定を一貫提供</div>
+      </div>
+      <div class="trust-card">
+        <div class="trust-icon">🤝</span>
+        <h3>AIを知らなくても<br>全く問題ない</h3>
+        <p>「AI動画って本当に使えるの？」という疑問は正直なところ正しい。GVAは初回無料相談でゼロから仕組みを説明し、まず1本テスト制作から始める導線を用意している。強引な営業は一切しない。</p>
+        <div class="proof">✓ テスト1本から開始可能</div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- FULL IMAGE -->
-<div class="full-image">
-  <img src="./phones.jpg" alt="AI UGC Videos on Mobile">
-  <div class="full-image-caption">AI-Generated UGC Content</div>
-</div>
+<!-- SERVICES -->
+<section class="sec services-sec" id="services">
+  <div class="sec-inner">
+    <div class="sec-label reveal">Service Lineup</div>
+    <h2 class="reveal" style="color:var(--white)">2つの量産システム。<br>組み合わせ自由。</h2>
+    <p class="sec-lead reveal">高品質なAIアクター動画と、大量投稿向けスライドショーを状況に応じて選択・組み合わせて使える。</p>
+    <div class="svc-tabs">
+
+      <!-- Service 01 -->
+      <div class="svc-tab reveal">
+        <div class="svc-tab-head">
+          <div class="svc-num">01</div>
+          <div class="svc-title-group">
+            <span class="svc-tag">FACELESS AI UGC</span>
+            <h3>AIアクター<br>動画制作</h3>
+          </div>
+        </div>
+        <div class="svc-tab-body">
+          <p class="svc-desc">実在しないAI生成の仮想モデルが商品をリアルにPRする縦型動画。スキンケア・食品・アパレル・アプリなど幅広い商材に対応。出演者不要で修正コストゼロ、A/Bテスト用バリアントも量産できる。</p>
+          <div class="feature-grid">
+            <div class="feature-cell">
+              <div class="feature-key">Actor</div>
+              <div class="feature-val">AIアクター<br>（アジア系含む多彩な仮想人物）</div>
+            </div>
+            <div class="feature-cell">
+              <div class="feature-key">Script</div>
+              <div class="feature-val">PR実績ベースの<br>スクリプト設計込み</div>
+            </div>
+            <div class="feature-cell">
+              <div class="feature-key">Finish</div>
+              <div class="feature-val">テロップ・BGM<br>SNS最適化編集込み</div>
+            </div>
+            <div class="feature-cell">
+              <div class="feature-key">Delivery</div>
+              <div class="feature-val">最短48時間<br>修正2回込み</div>
+            </div>
+          </div>
+          <div class="price-row">
+            <div class="price-item">
+              <div class="price-k">Spot / 1本</div>
+              <div class="price-v">¥50,000~</div>
+              <div class="price-n">スクリプト込み</div>
+            </div>
+            <div class="price-item">
+              <div class="price-k">Pack / 5本</div>
+              <div class="price-v">¥180,000~</div>
+              <div class="price-n">1本あたり36,000円〜</div>
+            </div>
+            <div class="price-item">
+              <div class="price-k">Monthly</div>
+              <div class="price-v">¥400,000~</div>
+              <div class="price-n">月10本〜＋戦略</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Service 03 -->
+      <div class="svc-tab reveal">
+        <div class="svc-tab-head">
+          <div class="svc-num">03</div>
+          <div class="svc-title-group">
+            <span class="svc-tag">AI SLIDESHOW</span>
+            <h3>スライドショー<br>量産システム</h3>
+          </div>
+        </div>
+        <div class="svc-tab-body">
+          <p class="svc-desc">画像・テキスト・音楽を組み合わせた情報系・教育系動画をAIで量産。週5本投稿のサブラインとして機能し、SNSアルゴリズムに乗るための投稿頻度を無理なく実現できる。</p>
+          <div class="feature-grid">
+            <div class="feature-cell">
+              <div class="feature-key">Format</div>
+              <div class="feature-val">ランキング・比較<br>How-To形式に最適</div>
+            </div>
+            <div class="feature-cell">
+              <div class="feature-key">Volume</div>
+              <div class="feature-val">同一構成で<br>10〜20本並列量産</div>
+            </div>
+            <div class="feature-cell">
+              <div class="feature-key">Design</div>
+              <div class="feature-val">ブランドカラー<br>フォント統一</div>
+            </div>
+            <div class="feature-cell">
+              <div class="feature-key">Schedule</div>
+              <div class="feature-val">月次コンテンツ<br>カレンダー管理</div>
+            </div>
+          </div>
+          <div class="price-row">
+            <div class="price-item">
+              <div class="price-k">Spot / 5本</div>
+              <div class="price-v">¥30,000~</div>
+              <div class="price-n">1本あたり6,000円〜</div>
+            </div>
+            <div class="price-item">
+              <div class="price-k">Pack / 20本</div>
+              <div class="price-v">¥80,000~</div>
+              <div class="price-n">月4〜5本投稿分</div>
+            </div>
+            <div class="price-item">
+              <div class="price-k">Monthly</div>
+              <div class="price-v">¥150,000~</div>
+              <div class="price-n">週5本×4週分</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FLOW -->
+<section class="sec flow-sec" id="flow">
+  <div class="sec-inner">
+    <div class="sec-label reveal">Workflow</div>
+    <h2 class="reveal">商品情報を送るだけ。<br>あとはGVAが動かす。</h2>
+    <p class="sec-lead reveal">AIに詳しくなくても大丈夫。5つのステップで初回から納品まで完結する。</p>
+    <div class="flow-visual reveal">
+      <div class="flow-step">
+        <div class="flow-n">01</div>
+        <div class="flow-title">無料相談</div>
+        <p class="flow-desc">商品・ターゲット・予算感をヒアリング。AI UGCの仕組みもここで全て説明。</p>
+        <span class="flow-note">30分 / オンラインOK</span>
+      </div>
+      <div class="flow-step">
+        <div class="flow-n">02</div>
+        <div class="flow-title">提案・見積もり</div>
+        <p class="flow-desc">3営業日以内に最適なプランと本数を提案。見積もりは無料。</p>
+        <span class="flow-note">3営業日以内</span>
+      </div>
+      <div class="flow-step">
+        <div class="flow-n">03</div>
+        <div class="flow-title">素材・情報の共有</div>
+        <p class="flow-desc">商品写真と伝えたいメッセージを送るだけ。スクリプトはGVAが作成。</p>
+        <span class="flow-note">フォーム案内あり</span>
+      </div>
+      <div class="flow-step">
+        <div class="flow-n">04</div>
+        <div class="flow-title">AI生成・確認</div>
+        <p class="flow-desc">スクリプト確定後に動画を生成して初稿を提出。修正2回まで込み。</p>
+        <span class="flow-note">修正2回込み</span>
+      </div>
+      <div class="flow-step">
+        <div class="flow-n">05</div>
+        <div class="flow-title">納品・効果測定</div>
+        <p class="flow-desc">SNS最適化フォーマットで納品。月額は月次レポート付き。</p>
+        <span class="flow-note">リテイナーはレポート付</span>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- COMPARE -->
-<section class="compare-sec" id="services">
-  <div class="compare-sec-head reveal">
-    <div>
-      <div class="section-label">Why AI UGC</div>
-      <h2 style="font-family:'DM Serif Display',serif; font-weight:400; line-height:1.1;">従来との<br>違いを知る</h2>
-    </div>
-    <p style="font-family:'Noto Sans JP',sans-serif; font-size:14px; font-weight:200; color:var(--gray); max-width:320px; line-height:1.85; text-align:right;">
-      AIがコンテンツ制作を変えた。<br>撮影・キャスティング・修正、<br>すべてが過去のものになりつつある。
-    </p>
-  </div>
-  <table class="compare-table reveal">
-    <thead>
-      <tr>
-        <th></th>
-        <th>従来のUGC制作</th>
-        <th class="hl">GVA AI UGC</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>制作期間</td>
-        <td>撮影 2〜5日 + 編集</td>
-        <td class="hl">AIで数時間生成</td>
-      </tr>
-      <tr>
-        <td>費用</td>
-        <td>1本 15〜50万円</td>
-        <td class="hl">1本 5万円〜</td>
-      </tr>
-      <tr>
-        <td>修正</td>
-        <td>再撮影コスト発生</td>
-        <td class="hl">即日再生成</td>
-      </tr>
-      <tr>
-        <td>本数</td>
-        <td>1〜3本が限界</td>
-        <td class="hl">100バリアント対応</td>
-      </tr>
-      <tr>
-        <td>A/Bテスト</td>
-        <td>困難・コスト大</td>
-        <td class="hl">複数訴求を並列展開</td>
-      </tr>
-    </tbody>
-  </table>
-</section>
-
-<!-- SERVICE 01 -->
-<div class="split" id="service01">
-  <div class="split-img">
-    <img src="./hero.jpg" alt="AI Actor UGC">
-  </div>
-  <div class="split-content">
-    <div class="section-label reveal">Service 01</div>
-    <h2 class="reveal">AIアクター<br>動画制作</h2>
-    <p class="reveal">実在しないAI生成の仮想モデルが、商品をリアルにPRする縦型動画。出演者不要、修正即対応、バリアント大量展開。スキンケア・食品・アプリに対応。</p>
-    <div class="spec-rows reveal">
-      <div class="spec-row">
-        <span class="spec-row-key">Actor</span>
-        <span class="spec-row-val">AIアクター（アジア系含む多彩な仮想人物）</span>
-      </div>
-      <div class="spec-row">
-        <span class="spec-row-key">Script</span>
-        <span class="spec-row-val">PR実績ベースのスクリプト設計込み</span>
-      </div>
-      <div class="spec-row">
-        <span class="spec-row-key">Delivery</span>
-        <span class="spec-row-val">最短48時間・修正2回込み</span>
-      </div>
-      <div class="spec-row">
-        <span class="spec-row-key">Format</span>
-        <span class="spec-row-val">縦型9:16・SNS最適化</span>
-      </div>
-    </div>
-    <div class="price-tag reveal">
-      <div class="price-from">Starting from</div>
-      <div class="price-amount">¥50,000 / 本</div>
-    </div>
-  </div>
-</div>
-
-<!-- SERVICE 03 -->
-<div class="split reverse" id="service03">
-  <div class="split-img">
-    <img src="./phones.jpg" alt="AI Slideshow Content">
-  </div>
-  <div class="split-content dark">
-    <div class="section-label reveal">Service 03</div>
-    <h2 class="reveal">スライドショー<br>量産システム</h2>
-    <p class="reveal">画像・テキスト・音楽を組み合わせた情報系動画をAIで量産。週5本投稿のサブラインとして機能し、アカウントの投稿頻度を劇的に上げる。</p>
-    <div class="spec-rows reveal">
-      <div class="spec-row">
-        <span class="spec-row-key">Volume</span>
-        <span class="spec-row-val">同一構成で10〜20本の並列量産</span>
-      </div>
-      <div class="spec-row">
-        <span class="spec-row-key">Format</span>
-        <span class="spec-row-val">ランキング・比較・How-To形式に最適化</span>
-      </div>
-      <div class="spec-row">
-        <span class="spec-row-key">Design</span>
-        <span class="spec-row-val">ブランドカラー・フォント統一</span>
-      </div>
-      <div class="spec-row">
-        <span class="spec-row-key">Schedule</span>
-        <span class="spec-row-val">月次コンテンツカレンダー管理</span>
-      </div>
-    </div>
-    <div class="price-tag reveal">
-      <div class="price-from">Starting from</div>
-      <div class="price-amount">¥30,000 / 5本</div>
-    </div>
-  </div>
-</div>
-
-<!-- PROCESS -->
-<section class="process-sec" id="process">
-  <div class="section-label reveal">Workflow</div>
-  <h2 class="reveal" style="font-family:'DM Serif Display',serif; font-weight:400; margin-bottom:0;">5ステップで完結する。</h2>
-  <div class="process-grid reveal">
-    <div class="process-cell">
-      <div class="p-index">01</div>
-      <div class="p-step">Step 01</div>
-      <div class="p-title">無料相談（30分）</div>
-      <p class="p-desc">商品・ターゲット・予算感をヒアリング。AIの仕組みもここで全て説明する。</p>
-    </div>
-    <div class="process-cell">
-      <div class="p-index">02</div>
-      <div class="p-step">Step 02</div>
-      <div class="p-title">提案・見積もり</div>
-      <p class="p-desc">3営業日以内に最適なプランを提案。見積もりは無料。</p>
-    </div>
-    <div class="process-cell">
-      <div class="p-index">03</div>
-      <div class="p-step">Step 03</div>
-      <div class="p-title">素材・情報の共有</div>
-      <p class="p-desc">商品写真と伝えたいメッセージを送るだけ。スクリプトはGVAが作成する。</p>
-    </div>
-    <div class="process-cell">
-      <div class="p-index">04</div>
-      <div class="p-step">Step 04</div>
-      <div class="p-title">AI生成・初稿確認</div>
-      <p class="p-desc">スクリプト確定後に動画を生成。方向性・トーンの修正にここで対応する。</p>
-    </div>
-    <div class="process-cell" style="grid-column: 1 / -1;">
-      <div class="p-index">05</div>
-      <div class="p-step">Step 05</div>
-      <div class="p-title">納品・効果確認</div>
-      <p class="p-desc">SNS最適化フォーマットで納品。月額リテイナーは投稿後のエンゲージメントをレポートして翌月に反映する。</p>
-    </div>
+<section class="sec compare-sec">
+  <div class="sec-inner">
+    <div class="sec-label reveal">Comparison</div>
+    <h2 class="reveal">他の選択肢との比較</h2>
+    <p class="sec-lead reveal">インフルエンサー起用と、AI UGCの違いを正直に整理した。どちらが良いかではなく、目的に合った使い分けを提案する。</p>
+    <table class="compare-table reveal">
+      <thead>
+        <tr>
+          <th></th>
+          <th>インフルエンサーPR<br>(大型/マクロ)</th>
+          <th>ナノ・マイクロ<br>インフルエンサー</th>
+          <th class="hl">GVA AI UGC</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>費用</td>
+          <td>1本50〜500万円</td>
+          <td>1本5〜20万円</td>
+          <td class="hl">1本5万円〜</td>
+        </tr>
+        <tr>
+          <td>制作期間</td>
+          <td>スケジュール調整で数週間</td>
+          <td>1〜2週間</td>
+          <td class="hl">最短48時間</td>
+        </tr>
+        <tr>
+          <td>拡散力</td>
+          <td>フォロワーへの即時拡散</td>
+          <td>ニッチな層に届きやすい</td>
+          <td class="hl">広告配信で補完可能</td>
+        </tr>
+        <tr>
+          <td>A/Bテスト</td>
+          <td>ほぼ不可能</td>
+          <td>困難</td>
+          <td class="hl">複数訴求を並列展開</td>
+        </tr>
+        <tr>
+          <td>修正対応</td>
+          <td>再交渉・追加費用</td>
+          <td>制約あり</td>
+          <td class="hl">即日再生成・2回込み</td>
+        </tr>
+        <tr>
+          <td>向いている用途</td>
+          <td>認知拡大・ブランディング</td>
+          <td>エンゲージメント重視</td>
+          <td class="hl">CVR改善・量産・PDCA</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </section>
 
 <!-- PRICING -->
-<section class="pricing-sec" id="pricing">
-  <div class="section-label reveal">Pricing</div>
-  <h2 class="reveal">まず1本から<br><em style="font-style:italic; color:rgba(255,255,255,0.45);">仕組み化へ。</em></h2>
-  <div class="plans-grid reveal">
-    <div class="plan-card">
-      <div class="plan-type">Start</div>
-      <div class="plan-price">¥50,000<span class="plan-unit"> / 本〜</span></div>
-      <div class="plan-desc">まず1本試したい方向けのスポット制作。</div>
-      <ul class="plan-list">
-        <li>AIアクター動画 or スライドショー選択可</li>
-        <li>スクリプト作成込み</li>
-        <li>修正2回対応・最短48時間納品</li>
-        <li>SNS最適化フォーマット</li>
-      </ul>
-      <a href="#contact" class="plan-action">相談する</a>
+<section class="sec pricing-sec" id="pricing">
+  <div class="sec-inner">
+    <div class="sec-label reveal">Pricing</div>
+    <h2 class="reveal" style="color:var(--white)">まず1本から、<br>仕組み化へ。</h2>
+    <p class="sec-lead reveal">スポット制作から月額リテイナーまで。目的と予算に合わせて選択できる。</p>
+    <div class="plans reveal">
+      <div class="plan">
+        <div class="plan-type">Start</div>
+        <div class="plan-price">¥50,000<span class="unit">/本~</span></div>
+        <div class="plan-catch">まず1本試してみたい方向け。<br>品質とスピードを確認してから判断できる。</div>
+        <ul class="plan-list">
+          <li>AIアクター動画 or スライドショー選択可</li>
+          <li>スクリプト作成込み</li>
+          <li>修正2回対応・最短48時間納品</li>
+          <li>SNS最適化フォーマット(9:16)</li>
+        </ul>
+        <a href="#contact" class="plan-btn">相談してみる</a>
+      </div>
+      <div class="plan rec">
+        <div class="plan-type">Package</div>
+        <div class="plan-price">¥180,000<span class="unit">/5本~</span></div>
+        <div class="plan-catch">A/Bテストや複数商材への対応。<br>まとめて依頼するほどコスパが上がる。</div>
+        <ul class="plan-list">
+          <li>AIアクター動画 × 5本</li>
+          <li>スクリプト × 5種・バリアント対応</li>
+          <li>各2回修正・分割納品可</li>
+          <li>簡易パフォーマンスレポート</li>
+          <li>訴求軸・アクター変更のA/Bテスト</li>
+        </ul>
+        <a href="#contact" class="plan-btn solid">このプランで相談</a>
+      </div>
+      <div class="plan">
+        <div class="plan-type">Retainer</div>
+        <div class="plan-price">¥400,000<span class="unit">/月~</span></div>
+        <div class="plan-catch">動画マーケティングを仕組み化したい企業向け。<br>戦略設計から効果測定まで一貫サポート。</div>
+        <ul class="plan-list">
+          <li>月10本〜（①③の組み合わせ自由）</li>
+          <li>月次戦略ミーティング</li>
+          <li>コンテンツカレンダー管理</li>
+          <li>月次効果測定レポート</li>
+          <li>優先対応・修正無制限</li>
+        </ul>
+        <a href="#contact" class="plan-btn">詳しく聞く</a>
+      </div>
     </div>
-    <div class="plan-card featured">
-      <div class="plan-type">Package</div>
-      <div class="plan-price">¥180,000<span class="plan-unit"> / 5本〜</span></div>
-      <div class="plan-desc">A/Bテストや複数商材に対応するパック。</div>
-      <ul class="plan-list">
-        <li>AIアクター動画 × 5本</li>
-        <li>スクリプト × 5種・バリアント対応</li>
-        <li>修正各2回・分割納品可</li>
-        <li>簡易パフォーマンスレポート</li>
-      </ul>
-      <a href="#contact" class="plan-action">このプランで相談</a>
-    </div>
-    <div class="plan-card">
-      <div class="plan-type">Retainer</div>
-      <div class="plan-price">¥400,000<span class="plan-unit"> / 月〜</span></div>
-      <div class="plan-desc">動画マーケティングを仕組み化したい企業向け。</div>
-      <ul class="plan-list">
-        <li>月10本〜（①③組み合わせ可）</li>
-        <li>月次戦略ミーティング・レポート</li>
-        <li>コンテンツカレンダー管理</li>
-        <li>優先対応・修正無制限</li>
-      </ul>
-      <a href="#contact" class="plan-action">詳しく聞く</a>
+    <p style="text-align:center;margin-top:24px;font-size:11px;color:rgba(245,244,240,0.2);letter-spacing:0.06em;">※ 記載価格はすべて税抜き参考価格。商材・内容・本数により変動。詳細はお見積もりにて。</p>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="sec faq-sec">
+  <div class="sec-inner">
+    <div class="sec-label reveal">FAQ</div>
+    <h2 class="reveal">よくある質問</h2>
+    <p class="sec-lead reveal">「AI動画ってどうなの？」に正直にお答えします。</p>
+    <div class="reveal">
+      <div class="faq-item">
+        <div class="faq-q">AI動画ってバレませんか？</div>
+        <div class="faq-a">最新のAI動画技術は見ただけではAIと判断できないレベルに達しています。また各SNSプラットフォームのAIコンテンツ開示ポリシーに準拠した形での提供も可能です。コンプライアンス面もGVAがサポートします。</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">どんな商品・サービスに向いていますか？</div>
+        <div class="faq-a">コスメ・スキンケア・食品・アパレル・アプリ・サプリ・生活雑貨などコンシューマー向け商品と相性が良いです。「人が使っている様子を見せることで購買意欲が上がる商品」が特に効果的です。</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">AIに詳しくないのですが大丈夫ですか？</div>
+        <div class="faq-a">まったく問題ありません。商品の情報と伝えたいメッセージを教えていただければ、あとはGVAが全て対応します。初回相談でAI UGCの仕組みをゼロから説明するので、不安なことは全てその場で聞いてください。</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">インフルエンサーへの依頼と何が違いますか？</div>
+        <div class="faq-a">インフルエンサーはフォロワーへの拡散力が強みですが、コスト・スケジュール調整・修正対応に課題があります。AI UGCは量・速さ・コストが強みです。GVAは両方を提供できるため、目的に合わせた組み合わせ提案も可能です。</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">著作権はどうなりますか？</div>
+        <div class="faq-a">納品した動画の使用権はお客様に帰属します。SNS投稿・広告配信・自社サイト掲載など自由にご利用いただけます。詳細は契約書にて明確にご説明します。</div>
+      </div>
     </div>
   </div>
-  <p style="text-align:center; margin-top:28px; font-family:'Jost',sans-serif; font-size:11px; letter-spacing:0.08em; color:rgba(255,255,255,0.2);">
-    ※ 記載価格は税抜き参考価格。詳細はお見積もりにて。
-  </p>
 </section>
 
 <!-- CTA -->
 <section class="cta-sec" id="contact">
-  <div class="cta-bg"></div>
-  <div class="cta-overlay"></div>
-  <div class="cta-content reveal">
-    <div class="cta-label">Free Consultation</div>
-    <h2>まず1本、<br>動かしてみよう。</h2>
-    <p>「費用感だけ知りたい」でも大歓迎。<br>初回30分の無料相談で、あなたのブランドに合った活用法を提案する。</p>
-    <div class="cta-form">
-      <input type="text" placeholder="お名前・会社名">
-      <input type="email" placeholder="メールアドレス">
-      <textarea placeholder="ご相談内容（商品・予算・お悩みなど）"></textarea>
-      <button type="submit">Send Message →</button>
+  <div class="cta-grid"></div>
+  <div class="cta-glow"></div>
+  <div class="cta-inner">
+    <div class="cta-left reveal">
+      <div class="sec-label">Free Consultation</div>
+      <h2>まず1本、<br><em>動かしてみよう。</em></h2>
+      <p>「費用感だけ知りたい」でも、「どんな動画が作れるか見てみたい」でも大歓迎。初回30分の無料相談で、あなたのブランドに合った活用法を提案する。</p>
+      <ul class="cta-points">
+        <li>相談・見積もりは完全無料</li>
+        <li>強引な営業は一切なし</li>
+        <li>テスト1本からスタート可能</li>
+        <li>オンライン対応（全国OK）</li>
+        <li>秘密厳守・NDA対応可</li>
+      </ul>
     </div>
-    <p class="cta-note">相談・見積もりは完全無料 / 強引な営業は一切行いません</p>
+    <div class="contact-box reveal">
+      <div class="form-group">
+        <label class="form-label">Name / Company</label>
+        <input type="text" class="form-input" placeholder="山田太郎 / 株式会社〇〇">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input type="email" class="form-input" placeholder="hello@example.com">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Message</label>
+        <textarea class="form-input" placeholder="商品・予算・ご相談内容など何でも"></textarea>
+      </div>
+      <button class="form-submit">Send Message →</button>
+      <p class="form-note">通常1〜2営業日以内にご返信します</p>
+    </div>
   </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-logo">GVA AI UGC Factory</div>
+  <div class="nav-logo">GVA AI UGC Factory</div>
   <div class="footer-links">
     <a href="https://goodvibesagency.tokyo/">Corporate</a>
-    <a href="https://good-vibes-agency.github.io/gva-ugc-lp/">UGC LP</a>
+    <a href="https://good-vibes-agency.github.io/gva-ugc-lp/">口コミ UGC</a>
   </div>
   <div class="footer-copy">© 2026 GOOD VIBES AGENCY</div>
 </footer>
 
 <script>
 // Scroll reveal
-const io = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('on'); });
-}, { threshold: 0.07 });
-document.querySelectorAll('.reveal, .reveal-slow').forEach(el => io.observe(el));
+const io = new IntersectionObserver(e => e.forEach(x => { if(x.isIntersecting) x.target.classList.add('on'); }), { threshold: 0.06 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
-// Nav color switch
-const nav = document.getElementById('mainNav');
-const darkSections = document.querySelectorAll('.stats-bar, .compare-sec, .split-content:not(.dark), .process-sec');
+// Nav scrolled
 window.addEventListener('scroll', () => {
-  const scrollY = window.scrollY;
-  const heroHeight = document.querySelector('.hero').offsetHeight;
-  if (scrollY > heroHeight - 80) {
-    nav.classList.remove('light');
-    nav.classList.add('dark');
-  } else {
-    nav.classList.remove('dark');
-    nav.classList.add('light');
-  }
+  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 60);
 });
 </script>
 </body>
