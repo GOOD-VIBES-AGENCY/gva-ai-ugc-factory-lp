@@ -1,0 +1,1336 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GVA AI UGC Factory | インフルエンサー事務所が、AI動画量産を始めた。</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #07080F;
+    --dark: #0D0E1A;
+    --card: #12131F;
+    --border: rgba(255,255,255,0.08);
+    --gold: #E8B94F;
+    --gold-light: #F5D07A;
+    --white: #F4F4F0;
+    --muted: rgba(244,244,240,0.45);
+    --accent: #4ECDC4;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'DM Sans', 'Noto Sans JP', sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ──── NAV ──── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 20px 48px;
+    display: flex; justify-content: space-between; align-items: center;
+    background: rgba(7,8,15,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800; font-size: 18px;
+    letter-spacing: 0.05em;
+    color: var(--white);
+  }
+
+  .nav-logo span { color: var(--gold); }
+
+  .nav-cta {
+    background: var(--gold);
+    color: var(--black);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600; font-size: 13px;
+    padding: 10px 24px;
+    border-radius: 100px;
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    transition: all 0.25s ease;
+  }
+
+  .nav-cta:hover { background: var(--gold-light); transform: translateY(-1px); }
+
+  /* ──── HERO ──── */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    justify-content: center;
+    padding: 140px 48px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute; inset: 0; z-index: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 10% 50%, rgba(232,185,79,0.07) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 80% at 90% 30%, rgba(78,205,196,0.05) 0%, transparent 60%);
+  }
+
+  .hero-grid {
+    position: absolute; inset: 0; z-index: 0; opacity: 0.04;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+
+  .hero-content { position: relative; z-index: 1; max-width: 900px; }
+
+  .hero-tag {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(232,185,79,0.1);
+    border: 1px solid rgba(232,185,79,0.25);
+    color: var(--gold);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 7px 16px; border-radius: 100px;
+    margin-bottom: 36px;
+    animation: fadeUp 0.8s ease both;
+  }
+
+  .hero-tag::before {
+    content: ''; width: 6px; height: 6px;
+    background: var(--gold); border-radius: 50%;
+    animation: pulse 2s ease infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.7); }
+  }
+
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(40px, 6vw, 80px);
+    font-weight: 800;
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    margin-bottom: 32px;
+    animation: fadeUp 0.8s 0.1s ease both;
+  }
+
+  h1 em { font-style: normal; color: var(--gold); }
+
+  .hero-sub {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: clamp(16px, 2vw, 19px);
+    font-weight: 300;
+    color: rgba(244,244,240,0.7);
+    max-width: 600px;
+    line-height: 1.8;
+    margin-bottom: 48px;
+    animation: fadeUp 0.8s 0.2s ease both;
+  }
+
+  .hero-actions {
+    display: flex; gap: 16px; flex-wrap: wrap;
+    animation: fadeUp 0.8s 0.3s ease both;
+  }
+
+  .btn-primary {
+    background: var(--gold);
+    color: var(--black);
+    font-weight: 700; font-size: 15px;
+    padding: 16px 36px;
+    border-radius: 100px;
+    text-decoration: none;
+    transition: all 0.25s ease;
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+
+  .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(232,185,79,0.25); }
+
+  .btn-secondary {
+    border: 1px solid var(--border);
+    color: var(--white);
+    font-weight: 500; font-size: 15px;
+    padding: 16px 36px;
+    border-radius: 100px;
+    text-decoration: none;
+    transition: all 0.25s ease;
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+
+  .btn-secondary:hover { border-color: rgba(255,255,255,0.25); background: rgba(255,255,255,0.04); }
+
+  .hero-stats {
+    margin-top: 80px;
+    display: flex; gap: 48px; flex-wrap: wrap;
+    padding-top: 40px;
+    border-top: 1px solid var(--border);
+    animation: fadeUp 0.8s 0.4s ease both;
+  }
+
+  .stat-item { display: flex; flex-direction: column; gap: 4px; }
+
+  .stat-number {
+    font-family: 'Syne', sans-serif;
+    font-size: 36px; font-weight: 800;
+    color: var(--gold);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 12px; color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ──── SECTION BASE ──── */
+  section { padding: 120px 48px; }
+
+  .section-inner { max-width: 1100px; margin: 0 auto; }
+
+  .section-tag {
+    display: inline-block;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(232,185,79,0.25);
+  }
+
+  h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(28px, 4vw, 48px);
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    margin-bottom: 20px;
+  }
+
+  .section-lead {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 17px; font-weight: 300;
+    color: rgba(244,244,240,0.65);
+    line-height: 1.9;
+    max-width: 620px;
+  }
+
+  /* ──── WHAT IS AI UGC ──── */
+  .what-section { background: var(--dark); }
+
+  .what-intro {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 80px;
+    margin-bottom: 80px;
+    align-items: center;
+  }
+
+  .definition-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 36px;
+  }
+
+  .definition-card h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px; font-weight: 700;
+    margin-bottom: 12px;
+  }
+
+  .definition-card p {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 15px; font-weight: 300;
+    color: rgba(244,244,240,0.65);
+    line-height: 1.8;
+  }
+
+  .compare-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 2px;
+    border-radius: 16px; overflow: hidden;
+    border: 1px solid var(--border);
+  }
+
+  .compare-header {
+    padding: 16px 24px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    text-align: center;
+  }
+
+  .compare-header.old { background: rgba(255,255,255,0.04); color: var(--muted); }
+  .compare-header.new { background: rgba(232,185,79,0.12); color: var(--gold); }
+
+  .compare-row {
+    display: contents;
+  }
+
+  .compare-cell {
+    padding: 16px 24px;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 14px;
+    border-top: 1px solid var(--border);
+    display: flex; align-items: center; gap: 10px;
+  }
+
+  .compare-cell.old { background: rgba(255,255,255,0.02); color: rgba(244,244,240,0.5); }
+  .compare-cell.new { background: rgba(232,185,79,0.04); color: var(--white); }
+
+  .compare-cell .icon { font-size: 16px; }
+
+  .flow-steps {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
+    background: var(--border);
+    border-radius: 16px; overflow: hidden;
+    margin-top: 48px;
+  }
+
+  .flow-step {
+    background: var(--card);
+    padding: 32px 24px;
+    text-align: center;
+  }
+
+  .step-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 48px; font-weight: 800;
+    color: rgba(232,185,79,0.15);
+    line-height: 1;
+    margin-bottom: 12px;
+  }
+
+  .step-label {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 13px; font-weight: 500;
+    margin-bottom: 8px;
+  }
+
+  .step-desc {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 12px; font-weight: 300;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* ──── TRUST SECTION ──── */
+  .trust-section { background: var(--black); }
+
+  .trust-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 48px;
+    margin-top: 60px;
+  }
+
+  .trust-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 48px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .trust-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, var(--gold), transparent);
+  }
+
+  .trust-icon {
+    font-size: 36px; margin-bottom: 20px;
+    display: block;
+  }
+
+  .trust-card h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px; font-weight: 700;
+    margin-bottom: 16px;
+  }
+
+  .trust-card p {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 15px; font-weight: 300;
+    color: rgba(244,244,240,0.65);
+    line-height: 1.85;
+  }
+
+  .trust-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(232,185,79,0.1);
+    border: 1px solid rgba(232,185,79,0.2);
+    color: var(--gold);
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 5px 12px; border-radius: 100px;
+    margin-bottom: 24px;
+  }
+
+  /* ──── SERVICES ──── */
+  .services-section { background: var(--dark); }
+
+  .service-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 56px;
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s ease;
+  }
+
+  .service-card:hover { border-color: rgba(232,185,79,0.25); }
+
+  .service-card::after {
+    content: '';
+    position: absolute; top: -100px; right: -100px;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(232,185,79,0.04) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .service-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 100px; font-weight: 800;
+    color: rgba(232,185,79,0.08);
+    position: absolute; top: 20px; right: 40px;
+    line-height: 1;
+  }
+
+  .service-header {
+    display: flex; align-items: flex-start; gap: 20px;
+    margin-bottom: 32px;
+  }
+
+  .service-badge {
+    background: rgba(232,185,79,0.12);
+    border: 1px solid rgba(232,185,79,0.2);
+    color: var(--gold);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 6px 14px; border-radius: 100px;
+    white-space: nowrap;
+    margin-top: 4px;
+  }
+
+  .service-card h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 28px; font-weight: 800;
+    line-height: 1.2;
+  }
+
+  .service-desc {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 16px; font-weight: 300;
+    color: rgba(244,244,240,0.7);
+    line-height: 1.85;
+    margin-bottom: 36px;
+    max-width: 640px;
+  }
+
+  .service-features {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+    margin-bottom: 36px;
+  }
+
+  .feature-item {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+  }
+
+  .feature-item .fi-icon { font-size: 22px; margin-bottom: 10px; }
+
+  .feature-item .fi-title {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px; font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .feature-item .fi-desc {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 12px; font-weight: 300;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  .service-pricing {
+    display: flex; gap: 24px; flex-wrap: wrap;
+    padding-top: 32px;
+    border-top: 1px solid var(--border);
+  }
+
+  .price-item { display: flex; flex-direction: column; gap: 4px; }
+  .price-label { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  .price-value { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 700; color: var(--gold); }
+  .price-note { font-size: 12px; color: var(--muted); }
+
+  /* ──── PROCESS ──── */
+  .process-section { background: var(--black); }
+
+  .process-timeline {
+    margin-top: 64px;
+    position: relative;
+  }
+
+  .process-timeline::before {
+    content: '';
+    position: absolute; left: 28px; top: 0; bottom: 0; width: 1px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+    opacity: 0.2;
+  }
+
+  .process-step {
+    display: flex; gap: 40px; margin-bottom: 56px;
+    position: relative;
+  }
+
+  .process-step-num {
+    width: 56px; height: 56px; min-width: 56px;
+    border-radius: 50%;
+    border: 1px solid rgba(232,185,79,0.3);
+    background: rgba(232,185,79,0.06);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-size: 18px; font-weight: 800;
+    color: var(--gold);
+    position: relative; z-index: 1;
+  }
+
+  .process-step-content h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px; font-weight: 700;
+    margin-bottom: 8px;
+    padding-top: 14px;
+  }
+
+  .process-step-content p {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 15px; font-weight: 300;
+    color: rgba(244,244,240,0.65);
+    line-height: 1.8;
+    max-width: 580px;
+  }
+
+  .reassure-tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(78,205,196,0.08);
+    border: 1px solid rgba(78,205,196,0.15);
+    color: var(--accent);
+    font-size: 11px; font-weight: 600;
+    padding: 4px 10px; border-radius: 100px;
+    margin-top: 10px;
+  }
+
+  /* ──── PRICING ──── */
+  .pricing-section { background: var(--dark); }
+
+  .pricing-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+    margin-top: 60px;
+  }
+
+  .pricing-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 40px 32px;
+    position: relative;
+    transition: all 0.3s ease;
+  }
+
+  .pricing-card:hover { transform: translateY(-4px); border-color: rgba(232,185,79,0.2); }
+
+  .pricing-card.featured {
+    border-color: rgba(232,185,79,0.35);
+    background: linear-gradient(135deg, #12131F 0%, #1A1710 100%);
+  }
+
+  .pricing-card.featured::before {
+    content: 'おすすめ';
+    position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+    background: var(--gold);
+    color: var(--black);
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 11px; font-weight: 700;
+    padding: 4px 16px; border-radius: 100px;
+  }
+
+  .plan-name {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+
+  .plan-price {
+    font-family: 'Syne', sans-serif;
+    font-size: 36px; font-weight: 800;
+    color: var(--white);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .plan-price span {
+    font-size: 16px; font-weight: 400;
+    color: var(--muted);
+  }
+
+  .plan-desc {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 13px; font-weight: 300;
+    color: var(--muted);
+    margin-bottom: 28px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--border);
+    line-height: 1.6;
+  }
+
+  .plan-features { list-style: none; margin-bottom: 32px; }
+
+  .plan-features li {
+    display: flex; align-items: flex-start; gap: 10px;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 14px; font-weight: 300;
+    color: rgba(244,244,240,0.75);
+    margin-bottom: 12px;
+    line-height: 1.5;
+  }
+
+  .plan-features li::before {
+    content: '✓';
+    color: var(--gold);
+    font-weight: 700;
+    font-size: 12px;
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+
+  .plan-btn {
+    display: block; text-align: center;
+    padding: 14px;
+    border-radius: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600; font-size: 14px;
+    text-decoration: none;
+    transition: all 0.25s ease;
+  }
+
+  .plan-btn.outline {
+    border: 1px solid var(--border);
+    color: var(--white);
+  }
+
+  .plan-btn.outline:hover { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.2); }
+
+  .plan-btn.solid {
+    background: var(--gold);
+    color: var(--black);
+  }
+
+  .plan-btn.solid:hover { background: var(--gold-light); transform: translateY(-1px); }
+
+  /* ──── FAQ ──── */
+  .faq-section { background: var(--black); }
+
+  .faq-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+    margin-top: 60px;
+  }
+
+  .faq-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px 32px;
+    cursor: pointer;
+    transition: border-color 0.25s ease;
+  }
+
+  .faq-item:hover { border-color: rgba(232,185,79,0.2); }
+
+  .faq-q {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 15px; font-weight: 500;
+    margin-bottom: 12px;
+    display: flex; align-items: flex-start; gap: 12px;
+    line-height: 1.5;
+  }
+
+  .faq-q::before {
+    content: 'Q';
+    font-family: 'Syne', sans-serif;
+    font-size: 13px; font-weight: 800;
+    color: var(--gold);
+    background: rgba(232,185,79,0.1);
+    border-radius: 6px;
+    width: 26px; height: 26px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .faq-a {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 14px; font-weight: 300;
+    color: rgba(244,244,240,0.65);
+    line-height: 1.8;
+    padding-left: 38px;
+  }
+
+  /* ──── CTA ──── */
+  .cta-section {
+    background: var(--dark);
+    text-align: center;
+  }
+
+  .cta-inner {
+    max-width: 700px; margin: 0 auto;
+    position: relative;
+  }
+
+  .cta-glow {
+    position: absolute;
+    width: 600px; height: 400px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(232,185,79,0.06) 0%, transparent 70%);
+    top: 50%; left: 50%; transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+
+  .cta-inner h2 {
+    font-size: clamp(32px, 5vw, 56px);
+    margin-bottom: 20px;
+  }
+
+  .cta-inner p {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 17px; font-weight: 300;
+    color: rgba(244,244,240,0.6);
+    line-height: 1.8;
+    margin-bottom: 48px;
+  }
+
+  .cta-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+  .cta-note {
+    margin-top: 24px;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 13px; color: var(--muted);
+  }
+
+  /* ──── FOOTER ──── */
+  footer {
+    background: var(--black);
+    border-top: 1px solid var(--border);
+    padding: 40px 48px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+
+  .footer-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800; font-size: 16px;
+    color: var(--white);
+  }
+
+  .footer-logo span { color: var(--gold); }
+
+  .footer-copy {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px; color: var(--muted);
+  }
+
+  /* ──── DIVIDER LINE ──── */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+    margin: 0 48px;
+  }
+
+  /* ──── SCROLL ANIMATIONS ──── */
+  .reveal {
+    opacity: 0; transform: translateY(32px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1; transform: translateY(0);
+  }
+
+  /* ──── RESPONSIVE ──── */
+  @media (max-width: 768px) {
+    nav { padding: 16px 20px; }
+    section { padding: 80px 20px; }
+    .hero { padding: 120px 20px 60px; }
+
+    h1 { font-size: 36px; }
+    h2 { font-size: 28px; }
+
+    .what-intro { grid-template-columns: 1fr; gap: 32px; }
+    .compare-grid { grid-template-columns: 1fr 1fr; }
+    .flow-steps { grid-template-columns: 1fr 1fr; }
+    .trust-grid { grid-template-columns: 1fr; }
+    .service-features { grid-template-columns: 1fr; }
+    .pricing-grid { grid-template-columns: 1fr; }
+    .faq-grid { grid-template-columns: 1fr; }
+
+    .hero-stats { gap: 28px; }
+    footer { flex-direction: column; gap: 16px; text-align: center; }
+    .service-num { font-size: 60px; }
+    .service-card { padding: 32px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">GVA <span>AI UGC</span> FACTORY</div>
+  <a href="#contact" class="nav-cta">無料相談する →</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="hero-tag">New Service 2026</div>
+    <h1>インフルエンサー事務所が、<br><em>AI動画量産</em>を始めた。</h1>
+    <p class="hero-sub">
+      PR案件実績とタレント運営の現場知識を持つGVAが、<br>
+      AIの力で動画コンテンツの量産・低コスト化を実現します。<br>
+      制作費を抑えながら、本物のクオリティと信頼性を提供。
+    </p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-primary">無料相談を予約する →</a>
+      <a href="#services" class="btn-secondary">サービス詳細を見る</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-number">100+</div>
+        <div class="stat-label">PR案件実績</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">9</div>
+        <div class="stat-label">所属タレント</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">1/10</div>
+        <div class="stat-label">従来比コスト</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">48h</div>
+        <div class="stat-label">最短納品</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- WHAT IS AI UGC -->
+<section class="what-section">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-tag">AI UGC とは？</div>
+      <h2>「AIが作った<em style="color:var(--gold)">本物っぽい動画</em>」<br>ではありません。</h2>
+      <p class="section-lead">
+        AI UGCとは、AIを活用して制作した「ユーザー目線のコンテンツ動画」のこと。
+        素人っぽいリアルさが逆に刺さる、今SNSで最も成果を出しているフォーマットです。
+      </p>
+    </div>
+
+    <div class="what-intro reveal" style="transition-delay:0.1s">
+      <div>
+        <div class="definition-card" style="margin-bottom:16px">
+          <h3>📱 UGC（User Generated Content）</h3>
+          <p>インフルエンサーや一般人が撮ったような「ありのまま感」のある縦型動画。スキンケア・食品・サービスのリアルな使用レビュー形式が主流。広告感を出さないことが成果のカギ。</p>
+        </div>
+        <div class="definition-card">
+          <h3>🤖 AI UGCとの違い</h3>
+          <p>出演者をAI（仮想アクター）に置き換えることで、モデルのキャスティング・撮影・編集の工数をゼロに。本数・バリエーションを大量生産できるため、広告配信のPDCAが劇的に速くなる。</p>
+        </div>
+      </div>
+      <div>
+        <div class="compare-grid">
+          <div class="compare-header old">従来のUGC動画</div>
+          <div class="compare-header new">GVA AI UGC</div>
+          <div class="compare-cell old"><span class="icon">⏰</span>撮影：2〜5日</div>
+          <div class="compare-cell new"><span class="icon">⚡</span>生成：数時間</div>
+          <div class="compare-cell old"><span class="icon">💸</span>1本15〜50万円</div>
+          <div class="compare-cell new"><span class="icon">💡</span>1本5〜15万円</div>
+          <div class="compare-cell old"><span class="icon">🔒</span>修正コスト大</div>
+          <div class="compare-cell new"><span class="icon">🔄</span>何度でも修正可</div>
+          <div class="compare-cell old"><span class="icon">📌</span>1〜3本が限界</div>
+          <div class="compare-cell new"><span class="icon">📦</span>100バリアント対応</div>
+          <div class="compare-cell old"><span class="icon">👤</span>顔出しリスクあり</div>
+          <div class="compare-cell new"><span class="icon">✅</span>完全AIアクター</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-steps reveal" style="transition-delay:0.2s">
+      <div class="flow-step">
+        <div class="step-num">01</div>
+        <div class="step-label">商品・訴求を共有</div>
+        <div class="step-desc">PRしたい商品情報と、伝えたいメッセージをヒアリング</div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">02</div>
+        <div class="step-label">AIスクリプト生成</div>
+        <div class="step-desc">PR案件実績をもとに、刺さる台本をAIで高速作成</div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">03</div>
+        <div class="step-label">AI動画生成・仕上げ</div>
+        <div class="step-desc">AIアクターが自然に語る動画を生成。テロップ・BGMも対応</div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">04</div>
+        <div class="step-label">確認 → 納品</div>
+        <div class="step-desc">修正対応後、最短48時間で納品。SNS投稿形式で受け渡し</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- TRUST -->
+<section class="trust-section">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-tag">なぜ GVA か</div>
+      <h2>「AIが作れる会社」は増えた。<br><em style="color:var(--gold)">実績がある会社</em>は違う。</h2>
+      <p class="section-lead">
+        どのAIツールも使えば動画は作れます。でも、何が刺さるかを知っているのは、
+        インフルエンサーマーケティングの現場を経験した私たちだけです。
+      </p>
+    </div>
+
+    <div class="trust-grid reveal" style="transition-delay:0.1s">
+      <div class="trust-card">
+        <div class="trust-badge">✦ 事務所実績</div>
+        <span class="trust-icon">🎯</span>
+        <h3>PR案件100件超の実績</h3>
+        <p>
+          コスメ・食品・アパレル・サービス、幅広いジャンルのPR案件を手がけてきました。
+          「何が視聴者に刺さるか」「どんな切り口が購買につながるか」を、
+          現場のデータと肌感覚で知っています。
+          このナレッジがAI動画の台本・フック・訴求設計に直結します。
+        </p>
+      </div>
+      <div class="trust-card">
+        <div class="trust-badge">✦ タレント管理</div>
+        <span class="trust-icon">✨</span>
+        <h3>9名のインフルエンサーを管理</h3>
+        <p>
+          実際のインフルエンサーのコンテンツ制作・ディレクションを日々行っているGVAは、
+          「本物っぽく見えるコンテンツ」の構造を理解しています。
+          AIアクターを使いながらも、実際のインフルエンサー動画のリアリティを
+          正確に再現できるのは、この経験があるからです。
+        </p>
+      </div>
+      <div class="trust-card">
+        <div class="trust-badge">✦ AI × 現場知識</div>
+        <span class="trust-icon">🔬</span>
+        <h3>AIに頼るのではなく、AIを使いこなす</h3>
+        <p>
+          AIツールはあくまで手段です。
+          重要なのは「どんな商品に」「どんな見せ方で」「どんな言葉で届けるか」の判断。
+          それはPRの現場で培った人間の知見です。
+          AIと現場知識を掛け合わせたGVAにしかできない動画制作があります。
+        </p>
+      </div>
+      <div class="trust-card">
+        <div class="trust-badge">✦ サポート体制</div>
+        <span class="trust-icon">🤝</span>
+        <h3>AI初心者でも、丁寧にご対応</h3>
+        <p>
+          「AIって何となく不安…」「本当に使えるの？」という疑問は正直なところ当然です。
+          GVAでは初回無料相談でAI UGCの仕組みをわかりやすくご説明し、
+          テスト制作から始めることも可能です。
+          まず1本、一緒に作ってみることが一番の近道です。
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SERVICES -->
+<section class="services-section" id="services">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-tag">サービスメニュー</div>
+      <h2>2つのプロダクトで、<br>あらゆる<em style="color:var(--gold)">動画ニーズ</em>に対応。</h2>
+      <p class="section-lead">
+        高品質なAIアクター動画から、大量投稿向けのスライドショーまで。
+        商品・予算・目的に合わせて最適なプランをご提案します。
+      </p>
+    </div>
+
+    <!-- Service 01 -->
+    <div class="service-card reveal" style="transition-delay:0.1s; margin-top:48px">
+      <div class="service-num">01</div>
+      <div class="service-header">
+        <div class="service-badge">Faceless AI UGC</div>
+        <h3>AIアクター動画<br>制作サービス</h3>
+      </div>
+      <p class="service-desc">
+        実在しないAI生成の仮想モデルが、あなたの商品を自然にPRする縦型動画を制作します。
+        出演者の顔出しリスクなし、修正も高速。スキンケア・食品・アプリなど幅広い商品に対応。
+        1本から依頼可能で、A/Bテスト用の複数バリアント制作も得意です。
+      </p>
+      <div class="service-features">
+        <div class="feature-item">
+          <div class="fi-icon">🎬</div>
+          <div class="fi-title">AIアクター出演</div>
+          <div class="fi-desc">アジア系を含む多彩な仮想人物が商品をPR</div>
+        </div>
+        <div class="feature-item">
+          <div class="fi-icon">📝</div>
+          <div class="fi-title">スクリプト設計</div>
+          <div class="fi-desc">PR実績をもとに刺さるフック・構成を作成</div>
+        </div>
+        <div class="feature-item">
+          <div class="fi-icon">🔄</div>
+          <div class="fi-title">バリアント量産</div>
+          <div class="fi-desc">訴求軸・アクターを変えたA/Bテスト素材</div>
+        </div>
+        <div class="feature-item">
+          <div class="fi-icon">🎵</div>
+          <div class="fi-title">テロップ・BGM</div>
+          <div class="fi-desc">SNS投稿に最適化した仕上げ編集込み</div>
+        </div>
+        <div class="feature-item">
+          <div class="fi-icon">⚡</div>
+          <div class="fi-title">最短48h納品</div>
+          <div class="fi-desc">急ぎの案件・キャンペーン前にも対応可</div>
+        </div>
+        <div class="feature-item">
+          <div class="fi-icon">✅</div>
+          <div class="fi-title">修正2回込み</div>
+          <div class="fi-desc">方向性のズレは遠慮なく修正依頼ください</div>
+        </div>
+      </div>
+      <div class="service-pricing">
+        <div class="price-item">
+          <div class="price-label">スポット（1本）</div>
+          <div class="price-value">¥50,000〜</div>
+          <div class="price-note">スクリプト込み</div>
+        </div>
+        <div class="price-item">
+          <div class="price-label">5本パック</div>
+          <div class="price-value">¥180,000〜</div>
+          <div class="price-note">1本36,000円〜</div>
+        </div>
+        <div class="price-item">
+          <div class="price-label">月額リテイナー</div>
+          <div class="price-value">¥400,000〜</div>
+          <div class="price-note">月10本〜 / 戦略込み</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Service 03 -->
+    <div class="service-card reveal" style="transition-delay:0.2s">
+      <div class="service-num">03</div>
+      <div class="service-header">
+        <div class="service-badge">AI Slideshow</div>
+        <h3>スライドショー型<br>コンテンツ量産サービス</h3>
+      </div>
+      <p class="service-desc">
+        画像・テキスト・音楽を組み合わせたスライドショー動画をAIで量産。
+        情報系・教育系・比較系など「文字で伝えるコンテンツ」に最適です。
+        アカウント育成・投稿頻度を上げたい場合のサブラインとして特に効果的。
+      </p>
+      <div class="service-features">
+        <div class="feature-item">
+          <div class="fi-icon">📊</div>
+          <div class="fi-title">教育・情報系に最適</div>
+          <div class="fi-desc">ランキング・比較・How-Toに相性抜群</div>
+        </div>
+        <div class="feature-item">
+          <div class="fi-icon">🚀</div>
+          <div class="fi-title">超高速量産</div>
+          <div class="fi-desc">同じ構成で10本・20本の量産が可能</div>
+        </div>
+        <div class="feature-item">
+          <div class="fi-icon">💰</div>
+          <div class="fi-title">低コスト運用</div>
+          <div class="fi-desc">週5本投稿でも月10万円台から対応</div>
+        </div>
+        <div class="feature-item">
+          <div class="fi-icon">🎨</div>
+          <div class="fi-title">ブランドデザイン</div>
+          <div class="fi-desc">カラー・フォント・トーンを統一制作</div>
+        </div>
+        <div class="feature-item">
+          <div class="fi-icon">📅</div>
+          <div class="fi-title">投稿スケジュール管理</div>
+          <div class="fi-desc">月単位のコンテンツカレンダーで管理</div>
+        </div>
+        <div class="feature-item">
+          <div class="fi-icon">📈</div>
+          <div class="fi-title">アカウント成長支援</div>
+          <div class="fi-desc">投稿頻度向上でアルゴリズムに乗りやすく</div>
+        </div>
+      </div>
+      <div class="service-pricing">
+        <div class="price-item">
+          <div class="price-label">スポット（5本）</div>
+          <div class="price-value">¥30,000〜</div>
+          <div class="price-note">1本6,000円〜</div>
+        </div>
+        <div class="price-item">
+          <div class="price-label">20本パック</div>
+          <div class="price-value">¥80,000〜</div>
+          <div class="price-note">月4〜5本投稿分</div>
+        </div>
+        <div class="price-item">
+          <div class="price-label">月額リテイナー</div>
+          <div class="price-value">¥150,000〜</div>
+          <div class="price-note">週5本 × 4週分</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PROCESS -->
+<section class="process-section">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-tag">制作フロー</div>
+      <h2>初めての方でも<br><em style="color:var(--gold)">迷わない</em>、5ステップ。</h2>
+      <p class="section-lead">
+        「AIのことがよくわからない」方でも大丈夫です。
+        商品情報をお伝えいただければ、あとはGVAが全部対応します。
+      </p>
+    </div>
+
+    <div class="process-timeline reveal" style="transition-delay:0.1s">
+      <div class="process-step">
+        <div class="process-step-num">1</div>
+        <div class="process-step-content">
+          <h3>無料相談（30分）</h3>
+          <p>PRしたい商品・ターゲット・予算感をお聞きします。AIの仕組みについてもこの場でご説明しますので、不安なことは何でもご質問ください。</p>
+          <div class="reassure-tag">💬 オンラインでOK・秘密厳守</div>
+        </div>
+      </div>
+      <div class="process-step">
+        <div class="process-step-num">2</div>
+        <div class="process-step-content">
+          <h3>提案 → お見積もり</h3>
+          <p>相談内容をもとに最適なプランをご提案。サービス①・③の組み合わせや本数など、目的に合わせた内容を3営業日以内にご回答します。</p>
+          <div class="reassure-tag">📋 提案書・見積もりは無料</div>
+        </div>
+      </div>
+      <div class="process-step">
+        <div class="process-step-num">3</div>
+        <div class="process-step-content">
+          <h3>商品情報 / 素材の共有</h3>
+          <p>商品写真・PR素材・伝えたいメッセージをご共有いただきます。スクリプトはGVAが作成しますのでご安心ください。内容確認・修正もこのタイミングで行います。</p>
+          <div class="reassure-tag">📦 送るだけでOK・フォーム案内あり</div>
+        </div>
+      </div>
+      <div class="process-step">
+        <div class="process-step-num">4</div>
+        <div class="process-step-content">
+          <h3>AI動画生成 → 初稿確認</h3>
+          <p>スクリプト確定後、AI動画を生成して初稿をご提出。「もう少し元気な雰囲気で」「テロップの文字を大きく」など、具体的なご要望はこのタイミングで反映します。</p>
+          <div class="reassure-tag">🎬 修正2回まで込み込み</div>
+        </div>
+      </div>
+      <div class="process-step">
+        <div class="process-step-num">5</div>
+        <div class="process-step-content">
+          <h3>納品 → 効果確認</h3>
+          <p>最終確認後、SNS投稿に最適化したファイル形式で納品。月額リテイナーの場合は投稿後のエンゲージメントをレポートして次月の制作に活かします。</p>
+          <div class="reassure-tag">📊 リテイナーは月次レポート付き</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PRICING -->
+<section class="pricing-section" id="pricing">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-tag">料金プラン</div>
+      <h2>まずは1本から、<br>続けるなら<em style="color:var(--gold)">リテイナー</em>で。</h2>
+    </div>
+    <div class="pricing-grid reveal" style="transition-delay:0.1s">
+      <div class="pricing-card">
+        <div class="plan-name">スタート</div>
+        <div class="plan-price">¥50,000<span>/本〜</span></div>
+        <div class="plan-desc">まず試してみたい方に。1本から依頼可能なスポット制作プラン。</div>
+        <ul class="plan-features">
+          <li>AIアクター動画 or スライドショー 選択可</li>
+          <li>スクリプト作成込み</li>
+          <li>修正2回対応</li>
+          <li>納品：最短48時間</li>
+          <li>SNS最適化フォーマット</li>
+        </ul>
+        <a href="#contact" class="plan-btn outline">相談してみる</a>
+      </div>
+      <div class="pricing-card featured">
+        <div class="plan-name">パッケージ</div>
+        <div class="plan-price">¥180,000<span>/5本〜</span></div>
+        <div class="plan-desc">A/Bテストや複数商材にまとめて対応したい方向けのお得なパック。</div>
+        <ul class="plan-features">
+          <li>AIアクター動画 × 5本</li>
+          <li>スクリプト × 5種作成</li>
+          <li>アクター・訴求軸バリアント対応</li>
+          <li>修正各2回対応</li>
+          <li>まとめ納品 or 分割納品 選択可</li>
+          <li>簡易パフォーマンスレポート</li>
+        </ul>
+        <a href="#contact" class="plan-btn solid">このプランで相談する</a>
+      </div>
+      <div class="pricing-card">
+        <div class="plan-name">月額リテイナー</div>
+        <div class="plan-price">¥400,000<span>/月〜</span></div>
+        <div class="plan-desc">継続的な動画マーケティングを仕組み化したい企業・ブランド向け。</div>
+        <ul class="plan-features">
+          <li>月10本〜（AIアクター＋スライドショー組み合わせ可）</li>
+          <li>月次戦略ミーティング</li>
+          <li>コンテンツカレンダー管理</li>
+          <li>効果測定・月次レポート</li>
+          <li>優先対応・修正無制限</li>
+          <li>SNSアカウント成長支援</li>
+        </ul>
+        <a href="#contact" class="plan-btn outline">詳しく話を聞く</a>
+      </div>
+    </div>
+    <p style="text-align:center; margin-top:32px; font-family:'Noto Sans JP',sans-serif; font-size:13px; color:var(--muted);">
+      ※ 記載価格はすべて税抜きの参考価格です。商材・制作内容・本数によって変動します。詳細はお見積もりにてご確認ください。
+    </p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- FAQ -->
+<section class="faq-section">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-tag">よくある質問</div>
+      <h2>「AIってどうなの？」<br>正直に<em style="color:var(--gold)">お答えします</em>。</h2>
+    </div>
+    <div class="faq-grid reveal" style="transition-delay:0.1s">
+      <div class="faq-item">
+        <div class="faq-q">AI動画ってバレませんか？</div>
+        <div class="faq-a">昨今のAI動画技術は非常に高品質で、見ただけではAIと判断できないレベルに達しています。また各SNSプラットフォームのAIコンテンツ開示ポリシーに準拠した形でのご提供が可能ですので、コンプライアンス面もご安心ください。</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">どんな商品・サービスに向いていますか？</div>
+        <div class="faq-a">コスメ・スキンケア・食品・アパレル・アプリ・サプリ・生活雑貨などのコンシューマー向け商品と相性が良いです。BtoB商材やサービス業でも訴求内容によっては対応可能ですので、まずご相談ください。</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">AIに不安があるのですが、大丈夫ですか？</div>
+        <div class="faq-a">まったく問題ありません。初回無料相談でAI UGCの仕組みをわかりやすくご説明します。「テスト1本だけ作ってみる」からスタートすることも大歓迎です。GVAはAIが得意でない方に向けて丁寧に対応します。</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">自社で撮影した素材と組み合わせられますか？</div>
+        <div class="faq-a">はい、可能です。実際の商品写真や既存の動画素材をAI UGCに組み込むことで、よりリアリティのある仕上がりになります。素材の有無にかかわらず対応できますので、お気軽にご共有ください。</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">完成後の著作権はどうなりますか？</div>
+        <div class="faq-a">納品した動画の使用権はお客様に帰属します。SNS投稿・広告配信・自社サイトへの掲載など、ご自由にご利用いただけます。詳細な条件については契約書にて明確にご説明します。</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">インフルエンサーへの依頼と何が違うの？</div>
+        <div class="faq-a">インフルエンサーへの依頼はフォロワーへの拡散力がある一方、コスト・スケジュール調整・修正対応の難しさがあります。AI UGCは拡散力の代わりに「量・速さ・コスト」が強みです。GVAは両方を提供できるため、組み合わせた提案も可能です。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CTA -->
+<section class="cta-section" id="contact">
+  <div class="section-inner">
+    <div class="cta-inner reveal">
+      <div class="cta-glow"></div>
+      <div class="section-tag" style="display:block; text-align:center; margin-bottom:24px">無料相談受付中</div>
+      <h2>まず1本、<br>一緒に<em style="color:var(--gold)">作ってみませんか</em>。</h2>
+      <p>
+        「どんな動画が作れるか見てみたい」「費用感を知りたい」という方も大歓迎。<br>
+        初回30分の無料相談で、あなたのブランドに合ったAI UGC活用法をご提案します。
+      </p>
+      <div class="cta-actions">
+        <a href="#contact-form" class="btn-primary">無料相談を申し込む →</a>
+      </div>
+      <div id="contact-form" style="margin-top:48px; background:var(--card); border:1px solid var(--border); border-radius:20px; padding:40px; text-align:left; max-width:560px; margin-left:auto; margin-right:auto;">
+        <p style="font-family:'Noto Sans JP',sans-serif; font-size:14px; color:var(--muted); margin-bottom:24px; text-align:center; line-height:1.6;">お名前・会社名・ご相談内容をお送りください。<br>通常1〜2営業日以内にご返信いたします。</p>
+        <div style="display:flex; flex-direction:column; gap:16px;">
+          <input type="text" placeholder="お名前・会社名" style="background:rgba(255,255,255,0.05); border:1px solid var(--border); border-radius:10px; padding:14px 18px; color:var(--white); font-family:'Noto Sans JP',sans-serif; font-size:14px; outline:none; width:100%;">
+          <input type="email" placeholder="メールアドレス" style="background:rgba(255,255,255,0.05); border:1px solid var(--border); border-radius:10px; padding:14px 18px; color:var(--white); font-family:'Noto Sans JP',sans-serif; font-size:14px; outline:none; width:100%;">
+          <textarea placeholder="ご相談内容（商品・予算・お悩みなど）" rows="4" style="background:rgba(255,255,255,0.05); border:1px solid var(--border); border-radius:10px; padding:14px 18px; color:var(--white); font-family:'Noto Sans JP',sans-serif; font-size:14px; outline:none; width:100%; resize:vertical;"></textarea>
+          <button style="background:var(--gold); color:var(--black); font-family:'DM Sans',sans-serif; font-weight:700; font-size:15px; padding:16px; border-radius:12px; border:none; cursor:pointer; transition:all 0.25s ease;" onmouseover="this.style.background='#F5D07A'" onmouseout="this.style.background='var(--gold)'">送信する →</button>
+        </div>
+      </div>
+      <div class="cta-note">相談・見積もりは完全無料です。強引な営業は一切行いません。</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">GVA <span>AI UGC</span> FACTORY</div>
+  <div class="footer-copy">© 2026 GOOD VIBES AGENCY. All rights reserved.</div>
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  reveals.forEach(el => observer.observe(el));
+
+  // Smooth nav active
+  window.addEventListener('scroll', () => {
+    const nav = document.querySelector('nav');
+    if (window.scrollY > 50) {
+      nav.style.borderBottomColor = 'rgba(255,255,255,0.1)';
+    } else {
+      nav.style.borderBottomColor = 'rgba(255,255,255,0.08)';
+    }
+  });
+</script>
+</body>
+</html>
