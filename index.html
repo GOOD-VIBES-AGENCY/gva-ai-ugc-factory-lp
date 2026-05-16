@@ -80,58 +80,40 @@ nav.dark .nav-cta:hover { background: var(--black); color: var(--white); }
 
 /* ── HERO ── */
 .hero {
-  height: 100vh; min-height: 700px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 100vh;
+  background: var(--black);
   position: relative;
-  display: flex; flex-direction: column; justify-content: flex-end;
   overflow: hidden;
 }
 
-.hero-img {
-  position: absolute; inset: 0;
-  background: url('./hero.jpg') center center / cover no-repeat;
-  transform: scale(1.02);
-  transition: transform 8s ease;
-}
-
-.hero-overlay {
-  position: absolute; inset: 0;
-  background: linear-gradient(
-    to bottom,
-    rgba(0,0,0,0.1) 0%,
-    rgba(0,0,0,0.15) 50%,
-    rgba(0,0,0,0.65) 100%
-  );
-}
-
-.hero-content {
-  position: relative; z-index: 1;
-  padding: 0 56px 72px;
-  display: flex; justify-content: space-between; align-items: flex-end;
-}
-
-.hero-headline {
-  max-width: 720px;
+.hero-left {
+  background: #080808;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 120px 64px 80px;
+  position: relative;
+  z-index: 1;
 }
 
 .hero-eyebrow {
   font-family: 'Jost', sans-serif;
-  font-size: 11px; font-weight: 400;
-  letter-spacing: 0.22em; text-transform: uppercase;
-  color: rgba(255,255,255,0.6);
-  margin-bottom: 20px;
-  display: flex; align-items: center; gap: 20px;
-}
-.hero-eyebrow::before {
-  content: ''; width: 32px; height: 1px; background: rgba(255,255,255,0.4);
+  font-size: 10px; font-weight: 400;
+  letter-spacing: 0.25em; text-transform: uppercase;
+  color: rgba(255,255,255,0.45);
+  margin-bottom: 32px;
 }
 
 h1 {
   font-family: 'DM Serif Display', serif;
-  font-size: clamp(52px, 7vw, 100px);
+  font-size: clamp(52px, 5.5vw, 92px);
   line-height: 1.0;
-  color: var(--white);
+  color: #ffffff;
   font-weight: 400;
   letter-spacing: -0.01em;
+  margin-bottom: 32px;
 }
 
 h1 em {
@@ -139,38 +121,75 @@ h1 em {
   opacity: 0.75;
 }
 
-.hero-right {
-  text-align: right;
-  padding-bottom: 8px;
-}
-.hero-right p {
+.hero-sub {
   font-family: 'Noto Sans JP', sans-serif;
   font-size: 13px; font-weight: 200;
-  color: rgba(255,255,255,0.55);
-  line-height: 1.8; max-width: 280px;
-  text-align: right;
+  color: rgba(255,255,255,0.45);
+  line-height: 1.9;
+  margin-bottom: 44px;
+  max-width: 360px;
 }
 
-.hero-scroll {
-  position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
-  z-index: 1;
-  display: flex; flex-direction: column; align-items: center; gap: 10px;
-}
-.hero-scroll span {
+.hero-cta {
+  display: inline-block;
   font-family: 'Jost', sans-serif;
-  font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase;
-  color: rgba(255,255,255,0.4);
+  font-size: 12px; font-weight: 500;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: #080808;
+  background: #ffffff;
+  padding: 16px 40px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  align-self: flex-start;
+  margin-bottom: 72px;
 }
-.scroll-line {
-  width: 1px; height: 48px;
-  background: linear-gradient(to bottom, rgba(255,255,255,0.4), transparent);
-  animation: scrollLine 2s ease infinite;
+.hero-cta:hover { background: rgba(255,255,255,0.85); }
+
+.hero-stats {
+  display: flex;
+  gap: 40px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding-top: 40px;
 }
-@keyframes scrollLine {
-  0% { transform: scaleY(0); transform-origin: top; }
-  50% { transform: scaleY(1); transform-origin: top; }
-  51% { transform: scaleY(1); transform-origin: bottom; }
-  100% { transform: scaleY(0); transform-origin: bottom; }
+
+.hero-stat-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.hero-stat-num {
+  font-family: 'DM Serif Display', serif;
+  font-size: 22px; font-weight: 400;
+  color: #ffffff;
+  line-height: 1;
+}
+
+.hero-stat-label {
+  font-family: 'Jost', sans-serif;
+  font-size: 9px; font-weight: 400;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+}
+
+.hero-right {
+  background: #080808;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-right img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.hero-right-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, #080808 0%, rgba(8,8,8,0.15) 40%, transparent 100%);
+  pointer-events: none;
 }
 
 /* ── STATEMENT ── */
@@ -677,8 +696,9 @@ footer {
 @media (max-width: 900px) {
   nav { padding: 20px 24px; }
   .nav-links { display: none; }
-  .hero-content { padding: 0 24px 48px; flex-direction: column; gap: 24px; }
-  .hero-right { text-align: left; }
+  .hero { grid-template-columns: 1fr; }
+  .hero-left { padding: 120px 24px 60px; }
+  .hero-right { min-height: 320px; }
   .statement { padding: 80px 24px; }
   .stats-inner { grid-template-columns: repeat(2, 1fr); gap: 32px; }
   .stat-col { border-right: none; margin-right: 0; padding-right: 0; border-bottom: 1px solid var(--border); padding-bottom: 24px; }
@@ -711,20 +731,33 @@ footer {
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-img" id="heroImg"></div>
-  <div class="hero-overlay"></div>
-  <div class="hero-content">
-    <div class="hero-headline">
-      <div class="hero-eyebrow">GVA AI UGC Factory — 2026</div>
-      <h1>Content<br><em>Reimagined.</em></h1>
-    </div>
-    <div class="hero-right">
-      <p>インフルエンサー事務所が、<br>AI動画量産システムを手に入れた。<br>本物の実績と、次世代の技術で。</p>
+  <div class="hero-left">
+    <div class="hero-eyebrow">GVA AI UGC FACTORY — 2026</div>
+    <h1>Content<br>Production.<br>Reimagined.</h1>
+    <p class="hero-sub">インフルエンサー事務所が、AI動画量産システムを手に入れた。</p>
+    <a href="#contact" class="hero-cta">無料相談を申し込む</a>
+    <div class="hero-stats">
+      <div class="hero-stat-item">
+        <span class="hero-stat-num">100+</span>
+        <span class="hero-stat-label">PR Cases</span>
+      </div>
+      <div class="hero-stat-item">
+        <span class="hero-stat-num">1/10</span>
+        <span class="hero-stat-label">Cost</span>
+      </div>
+      <div class="hero-stat-item">
+        <span class="hero-stat-num">48H</span>
+        <span class="hero-stat-label">Delivery</span>
+      </div>
+      <div class="hero-stat-item">
+        <span class="hero-stat-num">100+</span>
+        <span class="hero-stat-label">Variants</span>
+      </div>
     </div>
   </div>
-  <div class="hero-scroll">
-    <div class="scroll-line"></div>
-    <span>Scroll</span>
+  <div class="hero-right">
+    <img src="./phones.jpg" alt="AI UGC Content">
+    <div class="hero-right-overlay"></div>
   </div>
 </section>
 
@@ -1009,13 +1042,6 @@ const io = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('on'); });
 }, { threshold: 0.07 });
 document.querySelectorAll('.reveal, .reveal-slow').forEach(el => io.observe(el));
-
-// Hero parallax
-const heroImg = document.getElementById('heroImg');
-window.addEventListener('scroll', () => {
-  const y = window.scrollY;
-  if (heroImg) heroImg.style.transform = `scale(1.02) translateY(${y * 0.25}px)`;
-});
 
 // Nav color switch
 const nav = document.getElementById('mainNav');
